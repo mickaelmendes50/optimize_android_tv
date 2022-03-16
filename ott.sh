@@ -55,6 +55,7 @@ pause(){
 
 # Verifica se está usando Termux
 termux(){
+	pkg update -y -o Dpkg::Options::=--force-confold
 	clear
 	echo -e " ${NEG}Bem vindo(a) ao script OTT (Otimização TV TCL)${STD}"
 	echo -e " ${NEG}Modelos compatíveis: P8M, S6500 e S5300.${STD}"
