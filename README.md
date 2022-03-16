@@ -7,7 +7,7 @@ Esse script tem a finalizade de realizar otimizações em TVs TCL que rodam Andr
 
 ## Dependências para Linux: adb
 
-_Script 100% compatível com o Termux_
+_Script 100% compatível com o [Termux](https://f-droid.org/en/packages/com.termux)_
 
 **Executar e rodar o script**
 
@@ -16,5 +16,3 @@ _Script 100% compatível com o Termux_
 Após o comando acima, para chamar o script novamente basta digitar:
 
 `bash ott.sh`
-
-![alt Script rodando no Termux](https://cloud.t4l35.host/s/bM76krcxkXAk53p/preview)
