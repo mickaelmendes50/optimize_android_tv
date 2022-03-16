@@ -10,9 +10,10 @@ Esse script tem a finalizade de realizar otimizações em TVs TCL que rodam Andr
 _Script 100% compatível com o [Termux](https://f-droid.org/en/packages/com.termux)_
 
 **Executar e rodar o script**
-
-`curl -s https://raw.githubusercontent.com/talesam/optimize_android_tv/master/ott.sh -o ott.sh; bash ott.sh`
-
+```
+curl -s https://raw.githubusercontent.com/talesam/optimize_android_tv/master/ott.sh -o ott.sh; bash ott.sh
+```
 Após o comando acima, para chamar o script novamente basta digitar:
-
-`bash ott.sh`
+```
+bash ott.sh
+```
