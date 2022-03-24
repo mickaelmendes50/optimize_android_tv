@@ -61,23 +61,16 @@ termux(){
 	echo -e " ${NEG}Modelos compatíveis: P8M, S6500 e S5300.${STD}"
 	separacao
 	echo ""
-	echo -e " ${ROX063}Verificando dependências, aguarde...${STD}" && sleep 2
-	if [ -e "/data/data/com.termux/files/usr/bin/adb.bin" ] || [ -e "/usr/bin/adb" ]; then
-		echo -e " ${GRE046}Dependencias encontradas, conecte-se na TV.${STD}"
+	echo -e " ${BLU}*${STD} ${NEG}Baixando dependências para utilizar o script no Termux...${SDT}" && sleep 2
+	pkg install -y android-tools && pkg install -y wget && clear
+	if [ "$?" -eq "0" ]; then
 		echo ""
-		pause " Tecle [Enter] para continuar..." ; conectar_tv
+		echo -e " ${GRE}*${STD} ${NEG}Instalação conluida com sucesso!${STD}"
+		echo ""
+		pause " Tecle [Enter] para se conectar a TV..." ; conectar_tv
 	else
-		echo -e " ${BLU}*${STD} ${NEG}Baixando dependências para utilizar o script no Termux...${SDT}" && sleep 2
-		pkg install -y wget && wget https://raw.githubusercontent.com/MasterDevX/Termux-ADB/master/InstallTools.sh && bash InstallTools.sh && clear
-		if [ "$?" -eq "0" ]; then
-			echo ""
-			echo -e " ${GRE}*${STD} ${NEG}Instalação conluida com sucesso!${STD}"
-			echo ""
-			pause " Tecle [Enter] para se conectar a TV..." ; conectar_tv
-		else
-			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar e instalar as dependências.\n Verifique sua conexão e tente novamente.${STD}" ; exit 0
-		fi
+		echo ""
+		echo -e " ${RED}*${STD} ${NEG}Erro ao baixar e instalar as dependências.\n Verifique sua conexão e tente novamente.${STD}" ; exit 0
 	fi
 }
 
