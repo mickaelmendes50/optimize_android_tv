@@ -315,6 +315,58 @@ linha() {
 }
 # Desativar/Ativar Apps - FIM
 
+# Instalar GoogleTV launcher
+install_googletv(){
+
+    echo ""
+    echo -e " ${BLU}*${STD} ${NEG}Aguarde a instalação do GoogleTV Home...${STD}" && sleep 2
+    
+    # Baixa o app GoogleTV Home (verificar versão no commit de upload mais recente)
+    echo ""
+    echo -e " ${BLU}*${STD} ${NEG}Baixando o GoogleTV Home...${STD}" && sleep 1
+    wget https://github.com/mickaelmendes50/optimize_android_tv/raw/master/prebuilt/GoogleTV_Home.apk -O GoogleTV_Home.apk
+
+    if [ "$?" -ne 0 ]; then
+        pause " Erro ao baixar os arquivos, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
+    else
+
+        # Instala o GoogleTV usando ADB
+        echo ""
+        echo -e " ${BLU}*${STD} ${NEG}Instalando GoogleTV Home...${STD}" && sleep 1
+        adb install -r GoogleTV_Home.apk
+
+        if [ "$?" -eq "0" ]; then
+            echo ""
+            echo -e " ${GRE}*${STD} ${NEG}Google TV Home instalado com sucesso!${STD}"
+
+            # Ativando o GoogleTV
+            echo ""
+            echo -e " ${BLU}*${STD} ${NEG}Ativando o novo Launcher, aguarde...${STD}" && sleep 1
+            adb shell pm enable com.google.android.apps.tv.launcherx
+            if [ "$(adb shell pm enable com.google.android.apps.tv.launcherx | grep enable | cut -f5 -d " ")" = "enabled" ]; then
+                echo ""
+                echo -e " ${GRE}*${STD} ${NEG}GoogleTV Home ativado com sucesso!${STD}"
+
+                # Desativa o Launcher padrão
+                echo ""
+                echo -e " ${BLU}*${STD} ${NEG}Desativando launcher padrão...${STD}" && sleep 1
+                adb shell pm disable-user --user 0 com.google.android.tvlauncher
+                if [ "$(adb shell pm disable-user --user 0 com.google.android.tvlauncher | grep disabled-user | cut -f5 -d " ")" = "disabled-user" ]; then
+                    echo ""
+                    echo -e " ${GRE}*${STD} ${NEG}Launcher padrão desativado com sucesso!${STD}" && sleep 2
+                else
+                    pause " Falha ao desativar o launcher padrão, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
+                fi
+            else
+                pause " Falha ao ativar o GoogleTV, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
+            fi
+        else
+	    pause " Erro ao instalar o GoogleTV, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
+        fi
+    fi
+    pause " Tecle [Enter] para retornar ao menu." ; menu_googletv
+}
+
 # Instalar e ativar Laucher ATV Pro TCL Mod + Widget
 install_laucher(){
 	# Remove versão do ATV PRO
@@ -487,6 +539,50 @@ desativar_laucher(){
 	pause " Tecle [Enter] para retornar ao menu" ; menu_laucher
 }
 
+# Desativar a GoogleTV Home
+desativar_googletv(){
+
+	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.google.android.apps.tv.launcherx)" != "" ]; then
+		echo ""
+		echo -e " ${GRE}*${STD} ${NEG}Ativando Launcher Padrão...${STD}" && sleep 2
+		echo ""
+		adb shell pm enable com.google.android.tvlauncher
+		if [ "$?" -eq "0" ]; then
+			echo ""
+			echo -e " ${CIN}*${STD} ${NEG}Desativando GoogleTV Home...${STD}" && sleep 2
+			echo ""
+			adb shell pm disable-user --user 0 com.google.android.apps.tv.launcherx
+			if [ "$?" -eq "0" ]; then
+				echo ""
+				echo -e " ${CIN}*${STD} ${NEG}GoogleTV Home desativado com sucesso!${STD}" && sleep 1
+				echo ""
+			else
+				pause " Erro ao desativar o GoogleTV Home, verifique sua conexão. Tecle [Enter] para continuar." ; menu_googletv
+			fi
+			adb shell am start -n com.google.android.tvlauncher/.MainActivity
+			if [ "$?" -eq "0" ]; then
+				echo ""
+				echo -e " ${GRE}*${STD} ${NEG}Configurado o Laucher padrão da Android TV com sucesso!${STD}"
+				echo ""
+			else
+				echo ""
+				echo -e " ${RED}*${STD} ${NEG}Erro abrir o Laucher padrão, verifique sua conexão.${STD}"
+				echo ""
+				pause " Tecle [Enter] para retornar ao menu" ; menu_googletv
+			fi
+		else
+			echo ""
+			echo -e " ${RED}*${STD} ${NEG}Erro ao desativar GoogleTV Home.${STD}"
+			echo ""
+			pause " Tecle [Enter] para retornar ao menu" ; menu_googletv
+		fi
+	else
+		echo ""
+		echo -e " ${ROS}*${STD} ${NEG}GoogleTV Home ainda não instalado.${STD}"
+		echo ""
+	fi
+	pause " Tecle [Enter] para retornar ao menu" ; menu_googletv
+}
 
 # --- INSTALAR NOVOS APPS - INÍCIO
 
@@ -867,8 +963,9 @@ menu_principal(){
 		echo -e " ${BLU}2.${STD} ${RED009}Remover apps lixo (S6500)${STD}"
 		echo -e " ${BLU}3.${STD} ${GRY247}Desativar${STD}/${GRE046}Ativar apps${STD}"
 		echo -e " ${BLU}4.${STD} ${BLU039}Launcher ATV Pro TCL Mod + Widget${STD}"
-		echo -e " ${BLU}5.${STD} ${GRE046}Instalar novos apps${STD}"
-		echo -e " ${BLU}6.${STD} ${AMA226}Gravar Tela da TV${STD} ${NEG}*EXPERIMENTAL*${STD}"
+		echo -e " ${BLU}5.${STD} ${BLU039}Launcher GoogleTV Home${STD}"
+		echo -e " ${BLU}6.${STD} ${GRE046}Instalar novos apps${STD}"
+		echo -e " ${BLU}7.${STD} ${AMA226}Gravar Tela da TV${STD} ${NEG}*EXPERIMENTAL*${STD}"
 		echo -e " ${BLU}0.${STD} ${RED}Sair${STD}"
 		echo ""
 		read -p " Digite um número e tecle [Enter]:" option
@@ -877,8 +974,9 @@ menu_principal(){
 			2 ) rm_apps_S6500 ;;
 			3 ) menu_ativar_desativar ;;
 			4 ) menu_laucher ;;
-			5 ) menu_install_apps ;;
-			6 ) gravar_tela ;;
+			5 ) menu_googletv ;;
+			6 ) menu_install_apps ;;
+			7 ) gravar_tela ;;
 			0 ) exit ; adb disconnect $IP >/dev/null ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${ROS}3${STD}${NEG},${STD} ${ROS}4${STD}${NEG},${STD} ${ROS}5${STD},${STD} ${ROS}6${STD} ${NEG}ou${STD} ${ROS}0 para Sair${STD}"; 
 		esac
@@ -925,6 +1023,28 @@ menu_laucher(){
 		case $option in
 			1 ) install_laucher ;;
 			2 ) desativar_laucher ;;
+			3 ) menu_principal ;;
+			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
+		esac
+	done
+}
+
+menu_googletv(){ 
+	clear
+	option=0
+	until [ "$option" = "3" ]; do
+		separacao
+		echo -e " ${ROX027}Instalar a Launcher GoogleTV Home${STD}"
+		separacao
+		echo ""
+		echo -e " ${BLU}1.${STD} ${GRE046}Instalar/atualizar a GoogleTV Home${STD}"
+		echo -e " ${BLU}2.${STD} ${GRY247}Desativar GoogleTV Home${STD}"
+		echo -e " ${BLU}3.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
+		echo ""
+		read -p " Digite um número:" option
+		case $option in
+			1 ) install_googletv ;;
+			2 ) desativar_googletv ;;
 			3 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
 		esac
