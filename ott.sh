@@ -62,7 +62,7 @@ termux(){
 	separacao
 	echo ""
 	echo -e " ${BLU}*${STD} ${NEG}Baixando dependências para utilizar o script no Termux...${SDT}" && sleep 2
-	pkg install -y android-tools && pkg install -y wget && clear
+	pkg install -y ncurses-utils && pkg install -y android-tools && pkg install -y wget && clear
 	if [ "$?" -eq "0" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Instalação conluida com sucesso!${STD}"
