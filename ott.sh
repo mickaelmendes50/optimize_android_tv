@@ -145,7 +145,7 @@ rm_apps_rt51(){
 	else
 		# Baixar lista lixo dos apps
 		echo -e " ${BLU}*${STD} ${NEG}Aguarde, baixando lista negra de apps...${STD}" && sleep 2
-		wget https://raw.githubusercontent.com/talesam/optimize_android_tv/master/rm_apps_rt51.list && clear
+		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps-list/rm_apps_rt51.list && clear
 		if [ -e "rm_apps_rt51.list" ]; then
 			for app_rm in $(cat rm_apps_rt51.list); do
 				adb shell pm uninstall --user 0 $app_rm >/dev/null
@@ -184,7 +184,7 @@ rm_apps_rt41(){
 	else
 		# Baixar lista lixo dos apps
 		echo -e " ${BLU}*${STD} ${NEG}Aguarde, baixando lista negra de apps...${STD}" && sleep 2
-		wget https://raw.githubusercontent.com/talesam/optimize_android_tv/master/rm_apps_rt41.list && clear
+		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps-list/rm_apps_rt41.list && clear
 		if [ -e "rm_apps_rt41.list" ]; then
 			for app_rm in $(cat rm_apps_rt41.list); do
 				adb shell pm uninstall --user 0 $app_rm >/dev/null
@@ -229,7 +229,7 @@ ativar() {
 		# Baixar lista de apps para serem desativados
 		echo ""
 		echo -e " ${BLU}*${STD} ${NEG}Aguarde, baixando lista de apps...${STD}" && sleep 1
-		wget https://raw.githubusercontent.com/talesam/optimize_android_tv/master/apps_disable.list
+		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps-list/apps_disable.list
 		if [ -e "apps_disable.list" ]; then
 			for apk_full in $(cat apps_disable.list); do
 				apk="$(echo "$apk_full" | cut -f1 -d"|")"
@@ -280,7 +280,7 @@ desativar() {
 		# Baixar lista de apps para serem desativados
 		echo ""
 		echo -e " ${BLU}*${STD} ${NEG}Aguarde, baixando lista de apps...${STD}" && sleep 1
-		wget https://raw.githubusercontent.com/talesam/optimize_android_tv/master/apps_disable.list
+		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps_disable.list
 		if [ -e "apps_disable.list" ]; then
 			for apk_full in $(cat apps_disable.list); do
 				apk="$(echo "$apk_full" | cut -f1 -d"|")"
