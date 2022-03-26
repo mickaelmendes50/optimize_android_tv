@@ -367,19 +367,19 @@ install_googletv(){
     pause " Tecle [Enter] para retornar ao menu." ; menu_googletv
 }
 
-# Instalar e ativar Laucher ATV Pro TCL Mod + Widget
-install_laucher(){
+# Instalar e ativar Launcher ATV Pro TCL Mod + Widget
+install_launcher(){
 	# Remove versão do ATV PRO
 	if [ "$(adb shell pm list packages -u | cut -f2 -d: | grep ca.dstudio.atvlauncher.pro)" != "" ]; then
 		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Removendo versão do Laucher ATV PRO...${STD}" && sleep 1
+		echo -e " ${BLU}*${STD} ${NEG}Removendo versão do Launcher ATV PRO...${STD}" && sleep 1
 		echo ""
 		adb shell pm uninstall --user 0 ca.dstudio.atvlauncher.pro
 		if [ "$?" -eq "0" ]; then
-			echo -e " ${GRE}*${STD} ${NEG}Laucher ATV PRO removido com sucesso!${STD}"
+			echo -e " ${GRE}*${STD} ${NEG}Launcher ATV PRO removido com sucesso!${STD}"
 		else
 			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao remover Laucher ATV PRO.${STD}"
+			echo -e " ${RED}*${STD} ${NEG}Erro ao remover Launcher ATV PRO.${STD}"
 			pause " Tecle [Enter] para continuar com a instalação..."
 		fi
 	fi
@@ -387,13 +387,13 @@ install_laucher(){
 	# Remove versão do ATV FREE
 	if [ "$(adb shell pm list packages -u | cut -f2 -d: | grep ca.dstudio.atvlauncher.pro)" != "" ]; then
 		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Removendo versão do Laucher ATV FRE...${STD}" && sleep 1
+		echo -e " ${BLU}*${STD} ${NEG}Removendo versão do Launcher ATV FRE...${STD}" && sleep 1
 		echo ""
 		adb shell pm uninstall --user 0 ca.dstudio.atvlauncher.free
 		if [ "$?" -eq "0" ]; then
-			echo -e " ${GRE}*${STD} ${NEG}Laucher ATV FREE removido com sucesso!${STD}"
+			echo -e " ${GRE}*${STD} ${NEG}Launcher ATV FREE removido com sucesso!${STD}"
 		else
-			echo -e " ${RED}*${STD} ${NEG}Erro ao remover Laucher ATV FREE.${STD}"
+			echo -e " ${RED}*${STD} ${NEG}Erro ao remover Launcher ATV FREE.${STD}"
 			pause " Tecle [Enter] para continuar com a instalação..."
 		fi
 	fi
@@ -401,20 +401,20 @@ install_laucher(){
 	if [ "$(adb shell pm list packages -u | cut -f2 -d: | grep com.tcl.home)" != "" ]; then
 		if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.tcl.home)" = "" ]; then
 			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Ativando Laucher ATV PRO MOD...${STD}" && sleep 1
+			echo -e " ${BLU}*${STD} ${NEG}Ativando Launcher ATV PRO MOD...${STD}" && sleep 1
 			adb shell pm enable com.tcl.home
 			if [ "$?" -eq "0" ]; then
-				# Desativa o laucher padrão
+				# Desativa o Launcher padrão
 				adb shell pm disable-user --user 0 com.google.android.tvlauncher
 				if [ "$(adb shell pm disable-user --user 0 com.google.android.tvlauncher | grep disabled-user | cut -f5 -d " ")" = "disabled-user" ]; then
 					echo ""
-					echo -e " ${GRE}*${STD} ${NEG}Laucher ATV PRO MOD ativo com sucesso!${STD}"
+					echo -e " ${GRE}*${STD} ${NEG}Launcher ATV PRO MOD ativo com sucesso!${STD}"
 					echo ""
-					echo -e " ${BLU}*${STD} ${NEG}Iniciando a nova Laucher ATV PRO MOD, aguarde...${STD}" && sleep 1
+					echo -e " ${BLU}*${STD} ${NEG}Iniciando a nova Launcher ATV PRO MOD, aguarde...${STD}" && sleep 1
 					adb shell monkey -p com.tcl.home -c android.intent.category.LAUNCHER 1
 					if [ "$?" -eq "0" ]; then
 						echo ""
-						echo -e " ${GRE}*${STD} ${NEG}Laucher ATV PRO MOD iniciado com sucesso!${STD}" && sleep 1
+						echo -e " ${GRE}*${STD} ${NEG}Launcher ATV PRO MOD iniciado com sucesso!${STD}" && sleep 1
 						echo ""
 						echo -e " ${BLU}*${STD} ${NEG}Atualizando as permissões...${STD}"
 						# Seta permissão para o widget
@@ -423,80 +423,80 @@ install_laucher(){
 							echo ""
 							echo -e " ${GRE}*${STD} ${NEG}Permissões atualizadas com sucesso!${STD}"
 						else
-							pause " Erro ao ativar o Laucher, verifique sua conexão. Tecle [Enter] para continuar." ; menu_laucher
+							pause " Erro ao ativar o Launcher, verifique sua conexão. Tecle [Enter] para continuar." ; menu_launcher
 						fi
 					else
-						pause " Erro ao ativar o Laucher, verifique sua conexão. Tecle [Enter] para continuar." ; menu_laucher
+						pause " Erro ao ativar o Launcher, verifique sua conexão. Tecle [Enter] para continuar." ; menu_launcher
 					fi
 				else
-					pause " Erro ao ativar o Laucher, verifique sua conexão. Tecle [Enter] para continuar." ; menu_laucher
+					pause " Erro ao ativar o Launcher, verifique sua conexão. Tecle [Enter] para continuar." ; menu_launcher
 				fi
 			else
-				pause " Erro ao ativar Laucher ATV MOD. Tecle [Enter] para retornar ao menu" ; menu_laucher
+				pause " Erro ao ativar Launcher ATV MOD. Tecle [Enter] para retornar ao menu" ; menu_launcher
 			fi
 		else
 			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Laucher ATV PRO MOD já está ativo.${STD}"
-			pause " Tecle [Enter] para retornar ao menu" ; menu_laucher
+			echo -e " ${BLU}*${STD} ${NEG}Launcher ATV PRO MOD já está ativo.${STD}"
+			pause " Tecle [Enter] para retornar ao menu" ; menu_launcher
 		fi
 	else
 		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Aguarde a instalação do novo Laucher ATV PRO MOD...${STD}" && sleep 2
-		# Baixa o Laucher ATV PRO modificado e o Widget
+		echo -e " ${BLU}*${STD} ${NEG}Aguarde a instalação do novo Launcher ATV PRO MOD...${STD}" && sleep 2
+		# Baixa o Launcher ATV PRO modificado e o Widget
 		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Baixando a versão mais recente do Laucher ATV PRO MOD e Widget...${STD}"
+		echo -e " ${BLU}*${STD} ${NEG}Baixando a versão mais recente do Launcher ATV PRO MOD e Widget...${STD}"
 		wget https://cloud.talesam.org/s/YJ4st8xrbYAr5cD/download/tclhome.apk
 		wget https://cloud.talesam.org/s/5c33tAF8ddyeXm7/download/chronus.apk && clear
 		
 		if [ "$?" -ne 0 ]; then
-			pause " Erro ao baixar os arquivos, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_laucher
+			pause " Erro ao baixar os arquivos, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_launcher
 		else
 			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Instalando o novo Laucher, aguarde...${STD}" && sleep 1
+			echo -e " ${BLU}*${STD} ${NEG}Instalando o novo Launcher, aguarde...${STD}" && sleep 1
 			adb install -r tclhome.apk
 			adb install -r chronus.apk
 			#if [ "$(adb install -r tclhome.apk | grep "Success")" = "Success" && "$(adb install -r chronus.apk | grep "Success")" = "Success" ]; then
 			if [ "$?" -eq "0" ]; then
 				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}Laucher ATV PRO MOD instalado com sucesso!${STD}"
+				echo -e " ${GRE}*${STD} ${NEG}Launcher ATV PRO MOD instalado com sucesso!${STD}"
 				echo ""
-				echo -e " ${BLU}*${STD} ${NEG}Ativando o novo Laucher, aguarde...${STD}" && sleep 1
-				# Desativa o laucher padrão
+				echo -e " ${BLU}*${STD} ${NEG}Ativando o novo Launcher, aguarde...${STD}" && sleep 1
+				# Desativa o Launcher padrão
 				adb shell pm disable-user --user 0 com.google.android.tvlauncher
 				if [ "$(adb shell pm disable-user --user 0 com.google.android.tvlauncher | grep disabled-user | cut -f5 -d " ")" = "disabled-user" ]; then
-					echo "Laucher ATV PRO MOD ativo com sucesso!"
-					echo "Ativando a nova Laucher ATV PRO MOD..." && sleep 2
+					echo "Launcher ATV PRO MOD ativo com sucesso!"
+					echo "Ativando a nova Launcher ATV PRO MOD..." && sleep 2
 					adb shell monkey -p com.tcl.home -c android.intent.category.LAUNCHER 1
 					if [ "$?" -eq "0" ]; then
 						echo ""
-						echo -e " ${GRE}*${STD} ${NEG}Laucher ATV PRO MOD ativado com sucesso!${STD}"
+						echo -e " ${GRE}*${STD} ${NEG}Launcher ATV PRO MOD ativado com sucesso!${STD}"
 						echo ""
-						echo -e " ${BLU}*${STD} ${NEG}Abrindo Laucher ATV PRO MOD...${STD}" && sleep 1
+						echo -e " ${BLU}*${STD} ${NEG}Abrindo Launcher ATV PRO MOD...${STD}" && sleep 1
 					else
-						pause " Erro ao ativar o Laucher ATV PRO, verifique sua conexão. Tecle [Enter] para continuar." ; menu_laucher
+						pause " Erro ao ativar o Launcher ATV PRO, verifique sua conexão. Tecle [Enter] para continuar." ; menu_launcher
 					fi
 				else
-					pause " Erro ao ativar o Laucher ATV PRO, verifique sua conexão. Tecle [Enter] para continuar." ; menu_laucher
+					pause " Erro ao ativar o Launcher ATV PRO, verifique sua conexão. Tecle [Enter] para continuar." ; menu_launcher
 				fi
 				echo ""
 				echo -e " ${BLU}*${STD} ${NEG}Atualizando as permissões...${STD}" && sleep 1
 				# Seta permissão para o widget
 				adb shell appwidget grantbind --package com.tcl.home --user 0
 				if [ "$?" -ne "0" ]; then
-					pause " Erro ao setar permissões, verifique sua conexão. Tecle [Enter] para continuar." ; menu_laucher
+					pause " Erro ao setar permissões, verifique sua conexão. Tecle [Enter] para continuar." ; menu_launcher
 				else
 					echo -e " ${GRE}*${STD} ${NEG}Permissões atualizadas com sucesso!${STD}"
 				fi
 			else
-				pause " Erro na instalação.. Tecle [Enter] para continuar." ; menu_laucher
+				pause " Erro na instalação.. Tecle [Enter] para continuar." ; menu_launcher
 			fi
 		fi
 	fi
-	pause " Tecle [Enter] para retornar ao menu." ; menu_laucher
+	pause " Tecle [Enter] para retornar ao menu." ; menu_launcher
 }
 
-# Desativar Laucher ATV Pro TCL Mod + Widget
-desativar_laucher(){
+# Desativar Launcher ATV Pro TCL Mod + Widget
+desativar_launcher(){
 	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.tcl.home)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Ativando Lauche Padrão...${STD}" && sleep 2
@@ -504,39 +504,39 @@ desativar_laucher(){
 		adb shell pm enable com.google.android.tvlauncher
 		if [ "$?" -eq "0" ]; then
 			echo ""
-			echo -e " ${CIN}*${STD} ${NEG}Desativando Laucher ATV PRO MOD...${STD}" && sleep 2
+			echo -e " ${CIN}*${STD} ${NEG}Desativando Launcher ATV PRO MOD...${STD}" && sleep 2
 			echo ""
 			adb shell pm disable-user --user 0 com.tcl.home
 			if [ "$?" -eq "0" ]; then
 				echo ""
-				echo -e " ${CIN}*${STD} ${NEG}Laucher ATV PRO MOD desativado com sucesso!${STD}" && sleep 1
+				echo -e " ${CIN}*${STD} ${NEG}Launcher ATV PRO MOD desativado com sucesso!${STD}" && sleep 1
 				echo ""
 			else
-				pause " Erro ao desativar o Laucher ATV PRO MOD, verifique sua conexão. Tecle [Enter] para continuar." ; menu_laucher
+				pause " Erro ao desativar o Launcher ATV PRO MOD, verifique sua conexão. Tecle [Enter] para continuar." ; menu_launcher
 			fi
 			adb shell am start -n com.google.android.tvlauncher/.MainActivity
 			if [ "$?" -eq "0" ]; then
 				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}Configurado o Laucher padrão da Android TV com sucesso!${STD}"
+				echo -e " ${GRE}*${STD} ${NEG}Configurado o Launcher padrão da Android TV com sucesso!${STD}"
 				echo ""
 			else
 				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro abrir o Laucher padrão, verifique sua conexão.${STD}"
+				echo -e " ${RED}*${STD} ${NEG}Erro abrir o Launcher padrão, verifique sua conexão.${STD}"
 				echo ""
-				pause " Tecle [Enter] para retornar ao menu" ; menu_laucher
+				pause " Tecle [Enter] para retornar ao menu" ; menu_launcher
 			fi
 		else
 			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao desativar Laucher ATV PRO MOD.${STD}"
+			echo -e " ${RED}*${STD} ${NEG}Erro ao desativar Launcher ATV PRO MOD.${STD}"
 			echo ""
-			pause " Tecle [Enter] para retornar ao menu" ; menu_laucher
+			pause " Tecle [Enter] para retornar ao menu" ; menu_launcher
 		fi
 	else
 		echo ""
-		echo -e " ${ROS}*${STD} ${NEG}Laucher ATV PRO MOD ainda não instalado.${STD}"
+		echo -e " ${ROS}*${STD} ${NEG}Launcher ATV PRO MOD ainda não instalado.${STD}"
 		echo ""
 	fi
-	pause " Tecle [Enter] para retornar ao menu" ; menu_laucher
+	pause " Tecle [Enter] para retornar ao menu" ; menu_launcher
 }
 
 # Desativar a GoogleTV Home
@@ -562,11 +562,11 @@ desativar_googletv(){
 			adb shell am start -n com.google.android.tvlauncher/.MainActivity
 			if [ "$?" -eq "0" ]; then
 				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}Configurado o Laucher padrão da Android TV com sucesso!${STD}"
+				echo -e " ${GRE}*${STD} ${NEG}Configurado o Launcher padrão da Android TV com sucesso!${STD}"
 				echo ""
 			else
 				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro abrir o Laucher padrão, verifique sua conexão.${STD}"
+				echo -e " ${RED}*${STD} ${NEG}Erro abrir o Launcher padrão, verifique sua conexão.${STD}"
 				echo ""
 				pause " Tecle [Enter] para retornar ao menu" ; menu_googletv
 			fi
@@ -600,7 +600,7 @@ install_aptoidetv(){
 		if [ "$?" -ne 0 ]; then
 			echo ""
 			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
-			pause " Tecle [Enter] para continuar." ; menu_laucher
+			pause " Tecle [Enter] para continuar." ; menu_launcher
 		else
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Instalando o Aptoide TV, aguarde...${STD}" && sleep 1
@@ -827,7 +827,7 @@ install_xplore(){
 	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
 }
 
-# Instalar Setting (Troca Laucher)
+# Instalar Setting (Troca Launcher)
 install_setting(){
 	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep dp.ws.popcorntime)" != "" ]; then
 		echo ""
@@ -973,7 +973,7 @@ menu_principal(){
 			1 ) rm_apps_p8m ;;
 			2 ) rm_apps_S6500 ;;
 			3 ) menu_ativar_desativar ;;
-			4 ) menu_laucher ;;
+			4 ) menu_launcher ;;
 			5 ) menu_googletv ;;
 			6 ) menu_install_apps ;;
 			7 ) gravar_tela ;;
@@ -1006,23 +1006,23 @@ menu_ativar_desativar(){
 	done
 }
 
-# Menu Instalar e ativar/desativar Laucher ATV PRO MOD
-menu_laucher(){ 
+# Menu Instalar e ativar/desativar Launcher ATV PRO MOD
+menu_launcher(){ 
 	clear
 	option=0
 	until [ "$option" = "3" ]; do
 		separacao
-		echo -e " ${ROX027}Instalar e Ativar Laucher ATV PRO MOD${STD}"
+		echo -e " ${ROX027}Instalar e Ativar Launcher ATV PRO MOD${STD}"
 		separacao
 		echo ""
 		echo -e " ${BLU}1.${STD} ${GRE046}Instalar e ativar Launcher${STD}"
-		echo -e " ${BLU}2.${STD} ${GRY247}Desativar Laucher${STD}"
+		echo -e " ${BLU}2.${STD} ${GRY247}Desativar Launcher${STD}"
 		echo -e " ${BLU}3.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
 		echo ""
 		read -p " Digite um número:" option
 		case $option in
-			1 ) install_laucher ;;
-			2 ) desativar_laucher ;;
+			1 ) install_launcher ;;
+			2 ) desativar_launcher ;;
 			3 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
 		esac
@@ -1068,7 +1068,7 @@ menu_install_apps(){
 		echo -e " ${BLU}6.${STD} Send Files - v1.2.2"
 		echo -e " ${BLU}7.${STD} Youcine - v1.1.2"
 		echo -e " ${BLU}8.${STD} X-Plore - v4.27.65"
-		echo -e " ${BLU}9.${STD} Setting (Trocar Laucher)"
+		echo -e " ${BLU}9.${STD} Setting (Trocar Launcher)"
 		#echo -e " ${BLU}10.${STD} Photo Galley"
 		echo -e " ${BLU}0.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
 		echo ""
