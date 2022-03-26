@@ -58,7 +58,7 @@ termux(){
 	pkg update -y -o Dpkg::Options::=--force-confold
 	clear
 	echo -e " ${NEG}Bem vindo(a) ao script OTT (Otimização TV TCL)${STD}"
-	echo -e " ${NEG}Modelos compatíveis: P8M, S6500 e S5300.${STD}"
+	echo -e " ${NEG}Modelos compatíveis: RT51, RT41 e R51M.${STD}"
 	separacao
 	echo ""
 	echo -e " ${BLU}*${STD} ${NEG}Baixando dependências para utilizar o script no Termux...${SDT}" && sleep 2
@@ -127,14 +127,14 @@ conectar_tv(){
 	fi
 }
 
-# Remover apps P8M
-rm_apps_p8m(){
+# Remover apps RT51
+rm_apps_rt51(){
 	clear
 	OIFS=$IFS
 	IFS=$'\n'
 	# Verifica se o arquivo existe
-	if [ -e "rm_apps_p8m.list" ]; then
-		for app_rm in $(cat rm_apps_p8m.list); do
+	if [ -e "rm_apps_rt51.list" ]; then
+		for app_rm in $(cat rm_apps_rt51.list); do
 			adb shell pm uninstall --user 0 $app_rm >/dev/null
 			if [ "$?" -eq "0" ]; then
 				echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}removido com sucesso!${STD}" && sleep 1
@@ -145,9 +145,9 @@ rm_apps_p8m(){
 	else
 		# Baixar lista lixo dos apps
 		echo -e " ${BLU}*${STD} ${NEG}Aguarde, baixando lista negra de apps...${STD}" && sleep 2
-		wget https://raw.githubusercontent.com/talesam/optimize_android_tv/master/rm_apps_p8m.list && clear
-		if [ -e "rm_apps_p8m.list" ]; then
-			for app_rm in $(cat rm_apps_p8m.list); do
+		wget https://raw.githubusercontent.com/talesam/optimize_android_tv/master/rm_apps_rt51.list && clear
+		if [ -e "rm_apps_rt51.list" ]; then
+			for app_rm in $(cat rm_apps_rt51.list); do
 				adb shell pm uninstall --user 0 $app_rm >/dev/null
 				if [ "$?" -eq "0" ]; then
 					echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}removido com sucesso!${STD}" && sleep 1
@@ -166,14 +166,14 @@ rm_apps_p8m(){
 IFS=$OIFS
 }
 
-# Remover apps S6500
-rm_apps_S6500(){
+# Remover apps RT41, R51M
+rm_apps_rt41(){
 	clear
 	OIFS=$IFS
 	IFS=$'\n'
 	# Verifica se o arquivo existe
-	if [ -e "rm_apps_S6500.list" ]; then
-		for app_rm in $(cat rm_apps_S6500.list); do
+	if [ -e "rm_apps_rt41.list" ]; then
+		for app_rm in $(cat rm_apps_rt41.list); do
 			adb shell pm uninstall --user 0 $app_rm >/dev/null
 			if [ "$?" -eq "0" ]; then
 				echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}removido com sucesso!${STD}" && sleep 1
@@ -184,9 +184,9 @@ rm_apps_S6500(){
 	else
 		# Baixar lista lixo dos apps
 		echo -e " ${BLU}*${STD} ${NEG}Aguarde, baixando lista negra de apps...${STD}" && sleep 2
-		wget https://raw.githubusercontent.com/talesam/optimize_android_tv/master/rm_apps_S6500.list && clear
-		if [ -e "rm_apps_S6500.list" ]; then
-			for app_rm in $(cat rm_apps_S6500.list); do
+		wget https://raw.githubusercontent.com/talesam/optimize_android_tv/master/rm_apps_rt41.list && clear
+		if [ -e "rm_apps_rt41.list" ]; then
+			for app_rm in $(cat rm_apps_rt41.list); do
 				adb shell pm uninstall --user 0 $app_rm >/dev/null
 				if [ "$?" -eq "0" ]; then
 					echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}removido com sucesso!${STD}" && sleep 1
@@ -936,7 +936,7 @@ menu_principal(){
 	option=0
 	until [ "$option" = "7" ]; do
 		echo ""
-		echo -e " ${CYA}OTMIZAÇÃO TV TCL P8M, S6500 e S5300${STD} - ${YEL}$VER${STD}"
+		echo -e " ${CYA}OTMIZAÇÃO TV TCL PLATAFORMAS: RT41, RT51 e R51M ${STD} - ${YEL}$VER${STD}"
 
 		# Verifica o Status da TV, se está conectada ou não via ADB
 		ping -c 1 $IP >/dev/null 2>&1
@@ -960,8 +960,8 @@ menu_principal(){
 		echo -e " ${BLU}PIX:${STD} ${ROS}mesquita@aospa.co (Mesquita)${STD}"
 		echo ""
 		echo ""
-		echo -e " ${BLU}1.${STD} ${RED009}Remover apps lixo (P8M)${STD}"
-		echo -e " ${BLU}2.${STD} ${RED009}Remover apps lixo (S6500)${STD}"
+		echo -e " ${BLU}1.${STD} ${RED009}Remover apps lixo (RT51)${STD}"
+		echo -e " ${BLU}2.${STD} ${RED009}Remover apps lixo (RT41)${STD}"
 		echo -e " ${BLU}3.${STD} ${GRY247}Desativar${STD}/${GRE046}Ativar apps${STD}"
 		echo -e " ${BLU}4.${STD} ${BLU039}Launcher ATV Pro TCL Mod + Widget${STD}"
 		echo -e " ${BLU}5.${STD} ${BLU039}Launcher GoogleTV Home${STD}"
@@ -971,8 +971,8 @@ menu_principal(){
 		echo ""
 		read -p " Digite um número e tecle [Enter]:" option
 		case "$option" in
-			1 ) rm_apps_p8m ;;
-			2 ) rm_apps_S6500 ;;
+			1 ) rm_apps_rt51 ;;
+			2 ) rm_apps_rt41 ;;
 			3 ) menu_ativar_desativar ;;
 			4 ) menu_launcher ;;
 			5 ) menu_googletv ;;
