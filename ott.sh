@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Otimizações Android TV
 # Por Tales A. Mendonça - talesam@gmail.com
-# Agradecimento ao Bruno Gonçalvez Araujo, Rodrigo Carpes e @gr1m
+# Agradecimento ao Bruno Gonçalvez Araujo, Rodrigo Carpes, @gr1m e Mesquita (@mickaelmendes50)
 # https://developer.android.com/studio/command-line/adb
 # https://adbshell.com/commands/adb-shell-pm-list-packages
 
@@ -956,7 +956,8 @@ menu_principal(){
 		echo ""
 		echo ""
 		echo -e " ${YEL}FAÇA UMA DOAÇÃO E AJUDE ESTE PROJETO!${STD}"
-		echo -e " ${BLU}PIX:${STD} ${ROS}talesam@gmail.com${STD}"
+		echo -e " ${BLU}PIX:${STD} ${ROS}talesam@gmail.com (Tales)${STD}"
+		echo -e " ${BLU}PIX:${STD} ${ROS}mesquita@aospa.co (Mesquita)${STD}"
 		echo ""
 		echo ""
 		echo -e " ${BLU}1.${STD} ${RED009}Remover apps lixo (P8M)${STD}"
