@@ -135,6 +135,35 @@ rm_apps_rt51(){
 	# Verifica se o arquivo existe
 	if [ -e "rm_apps_rt51.list" ]; then
 		for app_rm in $(cat rm_apps_rt51.list); do
+			adb shell pm disable-user --user 0 $app_rm >/dev/null
+			if [ "$?" -eq "0" ]; then
+				echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}desativado com sucesso!${STD}" && sleep 1
+			else
+				echo -e " ${RED}*${STD} App ${CYA}$app_rm${STD} já foi desativado ou não existe" && sleep 1
+			fi
+		done
+	else
+		# Baixar lista lixo dos apps
+		echo -e " ${BLU}*${STD} ${NEG}Aguarde, baixando lista negra de apps...${STD}" && sleep 2
+		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps-list/rm_apps_rt51.list && clear
+		if [ -e "rm_apps_rt51.list" ]; then
+			for app_rm in $(cat rm_apps_rt51.list); do
+				adb shell pm uninstall --user 0 $app_rm >/dev/null
+				if [ "$?" -eq "0" ]; then
+					echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}desativado com sucesso!${STD}" && sleep 1
+				else
+					echo -e " ${RED}*${STD} App ${CYA}$app_rm${STD} já foi desativado ou não existe" && sleep 1
+				fi
+			done
+		else
+			echo ""
+			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar a lista LIXO dos apps. Verifique sua conexão.${STD}"
+			echo ""
+		fi
+	fi
+	# Verifica se o arquivo existe
+	if [ -e "rm_apps_rt51-uninstall.list" ]; then
+		for app_rm in $(cat rm_apps_rt51-uninstall.list); do
 			adb shell pm uninstall --user 0 $app_rm >/dev/null
 			if [ "$?" -eq "0" ]; then
 				echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}removido com sucesso!${STD}" && sleep 1
@@ -145,9 +174,9 @@ rm_apps_rt51(){
 	else
 		# Baixar lista lixo dos apps
 		echo -e " ${BLU}*${STD} ${NEG}Aguarde, baixando lista negra de apps...${STD}" && sleep 2
-		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps-list/rm_apps_rt51.list && clear
-		if [ -e "rm_apps_rt51.list" ]; then
-			for app_rm in $(cat rm_apps_rt51.list); do
+		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps-list/rm_apps_rt51-uninstall.list && clear
+		if [ -e "rm_apps_rt51-uninstall.list" ]; then
+			for app_rm in $(cat rm_apps_rt51-uninstall.list); do
 				adb shell pm uninstall --user 0 $app_rm >/dev/null
 				if [ "$?" -eq "0" ]; then
 					echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}removido com sucesso!${STD}" && sleep 1
