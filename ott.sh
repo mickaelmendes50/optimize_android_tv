@@ -310,7 +310,7 @@ desativar() {
 		# Baixar lista de apps para serem desativados
 		echo ""
 		echo -e " ${BLU}*${STD} ${NEG}Aguarde, baixando lista de apps...${STD}" && sleep 1
-		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps_disable.list
+		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps-list/apps_disable.list
 		if [ -e "apps_disable.list" ]; then
 			for apk_full in $(cat apps_disable.list); do
 				apk="$(echo "$apk_full" | cut -f1 -d"|")"
