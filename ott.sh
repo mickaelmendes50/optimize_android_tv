@@ -837,7 +837,7 @@ install_xplore(){
 		# Baixa o X-Plore
 		echo ""
 		echo -e " ${BLU}*${STD} ${NEG}Baixando o X-Plore...${STD}" && sleep 1
-		wget https://cloud.talesam.org/s/sEo25D5weiQ47FW/download/xplore.apk && clear
+		wget https://github.com/mickaelmendes50/optimize_android_tv/raw/master/prebuilt/XPlore.apk && clear
 		if [ "$?" -ne 0 ]; then
 			echo ""
 			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
