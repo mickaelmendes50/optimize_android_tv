@@ -62,7 +62,7 @@ termux(){
 	separacao
 	echo ""
 	echo -e " ${BLU}*${STD} ${NEG}Baixando dependências para utilizar o script no Termux...${SDT}" && sleep 2
-	pkg install -y ncurses-utils && pkg install -y android-tools && pkg install -y wget && clear
+	pkg install -y ncurses-utils && pkg install -y android-tools && pkg install -y wget && pkg install -y fakeroot && clear
 	if [ "$?" -eq "0" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Instalação conluida com sucesso!${STD}"
@@ -77,6 +77,7 @@ termux(){
 # Conexão da TV
 conectar_tv(){
 	clear
+	export ANDROID_NO_USE_FWMARK_CLIENT=1
 	echo " Digite o endereço IP da sua TV que encontra no"
 	echo -e " caminho abaixo e tecle ${NEG}[Enter]${STD} para continuar:"
 	echo ""
@@ -90,12 +91,12 @@ conectar_tv(){
 	if [ "$?" -eq "0" ]; then
 		echo ""
 		echo -e " ${LAR214}Conectando-se a sua TV...${STD}" && sleep 3
-		adb connect $IP >/dev/null
+		fakeroot adb connect $IP >/dev/null
 		if [ "$?" -eq "0" ]; then
 			echo -e " ${GRE046}Conectado com sucesso a TV!${STD}" && sleep 3
 			echo ""
 			clear
-			until adb shell pm list packages -e 2>/dev/null; do
+			until fakeroot adb shell pm list packages -e 2>/dev/null; do
 			#clear
 				echo -e " ${CYA122}Apareceu a seguinte janela em sua TV:${STD}"
 				echo -e " ${NEG}Permitir a depuração USB?${STD}"
@@ -106,8 +107,8 @@ conectar_tv(){
 				echo ""
 				pause " Tecle [Enter] para continuar..." ;
 				# Testa se o humano marcou a opção na TV			
-				adb disconnect $IP 2>/dev/null && adb connect $IP 2>/dev/null
-				if [ "$(adb connect $IP | cut -f1,2 -d" ")" = "already connected" ]; then
+				fakeroot adb disconnect $IP 2>/dev/null && fakeroot adb connect $IP 2>/dev/null
+				if [ "$(fakeroot adb connect $IP | cut -f1,2 -d" ")" = "already connected" ]; then
 					menu_principal
 				else
 					echo ""
@@ -135,7 +136,7 @@ rm_apps_rt51(){
 	# Verifica se o arquivo existe
 	if [ -e "rm_apps_rt51.list" ]; then
 		for app_rm in $(cat rm_apps_rt51.list); do
-			adb shell pm disable-user --user 0 $app_rm >/dev/null
+			fakeroot adb shell pm disable-user --user 0 $app_rm >/dev/null
 			if [ "$?" -eq "0" ]; then
 				echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}desativado com sucesso!${STD}" && sleep 1
 			else
@@ -148,7 +149,7 @@ rm_apps_rt51(){
 		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps-list/rm_apps_rt51.list && clear
 		if [ -e "rm_apps_rt51.list" ]; then
 			for app_rm in $(cat rm_apps_rt51.list); do
-				adb shell pm uninstall --user 0 $app_rm >/dev/null
+				fakeroot adb shell pm uninstall --user 0 $app_rm >/dev/null
 				if [ "$?" -eq "0" ]; then
 					echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}desativado com sucesso!${STD}" && sleep 1
 				else
@@ -164,7 +165,7 @@ rm_apps_rt51(){
 	# Verifica se o arquivo existe
 	if [ -e "rm_apps_rt51-uninstall.list" ]; then
 		for app_rm in $(cat rm_apps_rt51-uninstall.list); do
-			adb shell pm uninstall --user 0 $app_rm >/dev/null
+			fakeroot adb shell pm uninstall --user 0 $app_rm >/dev/null
 			if [ "$?" -eq "0" ]; then
 				echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}removido com sucesso!${STD}" && sleep 1
 			else
@@ -177,7 +178,7 @@ rm_apps_rt51(){
 		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps-list/rm_apps_rt51-uninstall.list && clear
 		if [ -e "rm_apps_rt51-uninstall.list" ]; then
 			for app_rm in $(cat rm_apps_rt51-uninstall.list); do
-				adb shell pm uninstall --user 0 $app_rm >/dev/null
+				fakeroot adb shell pm uninstall --user 0 $app_rm >/dev/null
 				if [ "$?" -eq "0" ]; then
 					echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}removido com sucesso!${STD}" && sleep 1
 				else
@@ -203,7 +204,7 @@ rm_apps_rt41(){
 	# Verifica se o arquivo existe
 	if [ -e "rm_apps_rt41.list" ]; then
 		for app_rm in $(cat rm_apps_rt41.list); do
-			adb shell pm uninstall --user 0 $app_rm >/dev/null
+			fakeroot adb shell pm uninstall --user 0 $app_rm >/dev/null
 			if [ "$?" -eq "0" ]; then
 				echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}removido com sucesso!${STD}" && sleep 1
 			else
@@ -216,7 +217,7 @@ rm_apps_rt41(){
 		wget https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/apps-list/rm_apps_rt41.list && clear
 		if [ -e "rm_apps_rt41.list" ]; then
 			for app_rm in $(cat rm_apps_rt41.list); do
-				adb shell pm uninstall --user 0 $app_rm >/dev/null
+				fakeroot adb shell pm uninstall --user 0 $app_rm >/dev/null
 				if [ "$?" -eq "0" ]; then
 					echo -e " ${BLU}*${STD} App ${CYA}$app_rm${STD} ${GRE046}removido com sucesso!${STD}" && sleep 1
 				else
@@ -243,7 +244,7 @@ ativar() {
 	OIFS=$IFS
 	IFS=$'\n'
 	
-	apk_disabled="$(adb shell pm list packages -d | cut -f2 -d:)"
+	apk_disabled="$(fakeroot adb shell pm list packages -d | cut -f2 -d:)"
 	# Verifica se o arquivo existe no diretório local
 	if [ -e "apps_disable.list" ]; then
 		for apk_full in $(cat apps_disable.list); do
@@ -285,7 +286,7 @@ pergunta_ativar() {
 }
 
 resposta_ativar() {
-	[[ "$resposta" =~ ^([Ss])$ ]] && { echo -e ""${LAR208}"Informação sobre o pacote${STD} ${CYA044}${apk}${STD}";adb shell pm enable ${apk};}
+	[[ "$resposta" =~ ^([Ss])$ ]] && { echo -e ""${LAR208}"Informação sobre o pacote${STD} ${CYA044}${apk}${STD}";fakeroot adb shell pm enable ${apk};}
 }
 
 desativar() {
@@ -294,7 +295,7 @@ desativar() {
 	OIFS=$IFS
 	IFS=$'\n'
 	
-	apk_disabled="$(adb shell pm list packages -d | cut -f2 -d:)"
+	apk_disabled="$(fakeroot adb shell pm list packages -d | cut -f2 -d:)"
 	# Verifica se o arquivo existe no diretório local
 	if [ -e "apps_disable.list" ]; then
 		for apk_full in $(cat apps_disable.list); do
@@ -336,7 +337,7 @@ pergunta_desativar() {
 }
 
 resposta_desativar() {
-	[[ "$resposta" =~ ^([Ss])$ ]] && { echo -e ""${LAR208}"Informação sobre o pacote${STD} ${CYA044}${apk}${STD}";adb shell pm disable-user --user 0 ${apk};}
+	[[ "$resposta" =~ ^([Ss])$ ]] && { echo -e ""${LAR208}"Informação sobre o pacote${STD} ${CYA044}${apk}${STD}";fakeroot adb shell pm disable-user --user 0 ${apk};}
 }
 
 linha() {
@@ -362,7 +363,7 @@ install_googletv(){
         # Instala o GoogleTV usando ADB
         echo ""
         echo -e " ${BLU}*${STD} ${NEG}Instalando GoogleTV Home...${STD}" && sleep 1
-        adb install -r GoogleTV_Home.apk
+        fakeroot adb install -r GoogleTV_Home.apk
 
         if [ "$?" -eq "0" ]; then
             echo ""
@@ -371,16 +372,16 @@ install_googletv(){
             # Ativando o GoogleTV
             echo ""
             echo -e " ${BLU}*${STD} ${NEG}Ativando o novo Launcher, aguarde...${STD}" && sleep 1
-            adb shell pm enable com.google.android.apps.tv.launcherx
-            if [ "$(adb shell pm enable com.google.android.apps.tv.launcherx | grep enable | cut -f5 -d " ")" = "enabled" ]; then
+            fakeroot adb shell pm enable com.google.android.apps.tv.launcherx
+            if [ "$(fakeroot adb shell pm enable com.google.android.apps.tv.launcherx | grep enable | cut -f5 -d " ")" = "enabled" ]; then
                 echo ""
                 echo -e " ${GRE}*${STD} ${NEG}GoogleTV Home ativado com sucesso!${STD}"
 
                 # Desativa o Launcher padrão
                 echo ""
                 echo -e " ${BLU}*${STD} ${NEG}Desativando launcher padrão...${STD}" && sleep 1
-                adb shell pm disable-user --user 0 com.google.android.tvlauncher
-                if [ "$(adb shell pm disable-user --user 0 com.google.android.tvlauncher | grep disabled-user | cut -f5 -d " ")" = "disabled-user" ]; then
+                fakeroot adb shell pm disable-user --user 0 com.google.android.tvlauncher
+                if [ "$(fakeroot adb shell pm disable-user --user 0 com.google.android.tvlauncher | grep disabled-user | cut -f5 -d " ")" = "disabled-user" ]; then
                     echo ""
                     echo -e " ${GRE}*${STD} ${NEG}Launcher padrão desativado com sucesso!${STD}" && sleep 2
                 else
@@ -399,11 +400,11 @@ install_googletv(){
 # Instalar e ativar Launcher ATV Pro TCL Mod + Widget
 install_launcher(){
 	# Remove versão do ATV PRO
-	if [ "$(adb shell pm list packages -u | cut -f2 -d: | grep ca.dstudio.atvlauncher.pro)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -u | cut -f2 -d: | grep ca.dstudio.atvlauncher.pro)" != "" ]; then
 		echo ""
 		echo -e " ${BLU}*${STD} ${NEG}Removendo versão do Launcher ATV PRO...${STD}" && sleep 1
 		echo ""
-		adb shell pm uninstall --user 0 ca.dstudio.atvlauncher.pro
+		fakeroot adb shell pm uninstall --user 0 ca.dstudio.atvlauncher.pro
 		if [ "$?" -eq "0" ]; then
 			echo -e " ${GRE}*${STD} ${NEG}Launcher ATV PRO removido com sucesso!${STD}"
 		else
@@ -414,11 +415,11 @@ install_launcher(){
 	fi
 
 	# Remove versão do ATV FREE
-	if [ "$(adb shell pm list packages -u | cut -f2 -d: | grep ca.dstudio.atvlauncher.pro)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -u | cut -f2 -d: | grep ca.dstudio.atvlauncher.pro)" != "" ]; then
 		echo ""
 		echo -e " ${BLU}*${STD} ${NEG}Removendo versão do Launcher ATV FRE...${STD}" && sleep 1
 		echo ""
-		adb shell pm uninstall --user 0 ca.dstudio.atvlauncher.free
+		fakeroot adb shell pm uninstall --user 0 ca.dstudio.atvlauncher.free
 		if [ "$?" -eq "0" ]; then
 			echo -e " ${GRE}*${STD} ${NEG}Launcher ATV FREE removido com sucesso!${STD}"
 		else
@@ -427,27 +428,27 @@ install_launcher(){
 		fi
 	fi
 
-	if [ "$(adb shell pm list packages -u | cut -f2 -d: | grep com.tcl.home)" != "" ]; then
-		if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.tcl.home)" = "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -u | cut -f2 -d: | grep com.tcl.home)" != "" ]; then
+		if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.tcl.home)" = "" ]; then
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Ativando Launcher ATV PRO MOD...${STD}" && sleep 1
-			adb shell pm enable com.tcl.home
+			fakeroot adb shell pm enable com.tcl.home
 			if [ "$?" -eq "0" ]; then
 				# Desativa o Launcher padrão
-				adb shell pm disable-user --user 0 com.google.android.tvlauncher
-				if [ "$(adb shell pm disable-user --user 0 com.google.android.tvlauncher | grep disabled-user | cut -f5 -d " ")" = "disabled-user" ]; then
+				fakeroot adb shell pm disable-user --user 0 com.google.android.tvlauncher
+				if [ "$(fakeroot adb shell pm disable-user --user 0 com.google.android.tvlauncher | grep disabled-user | cut -f5 -d " ")" = "disabled-user" ]; then
 					echo ""
 					echo -e " ${GRE}*${STD} ${NEG}Launcher ATV PRO MOD ativo com sucesso!${STD}"
 					echo ""
 					echo -e " ${BLU}*${STD} ${NEG}Iniciando a nova Launcher ATV PRO MOD, aguarde...${STD}" && sleep 1
-					adb shell monkey -p com.tcl.home -c android.intent.category.LAUNCHER 1
+					fakeroot adb shell monkey -p com.tcl.home -c android.intent.category.LAUNCHER 1
 					if [ "$?" -eq "0" ]; then
 						echo ""
 						echo -e " ${GRE}*${STD} ${NEG}Launcher ATV PRO MOD iniciado com sucesso!${STD}" && sleep 1
 						echo ""
 						echo -e " ${BLU}*${STD} ${NEG}Atualizando as permissões...${STD}"
 						# Seta permissão para o widget
-						adb shell appwidget grantbind --package com.tcl.home --user 0
+						fakeroot adb shell appwidget grantbind --package com.tcl.home --user 0
 						if [ "$?" -eq "0" ]; then
 							echo ""
 							echo -e " ${GRE}*${STD} ${NEG}Permissões atualizadas com sucesso!${STD}"
@@ -482,20 +483,20 @@ install_launcher(){
 		else
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Instalando o novo Launcher, aguarde...${STD}" && sleep 1
-			adb install -r tclhome.apk
-			adb install -r chronus.apk
-			#if [ "$(adb install -r tclhome.apk | grep "Success")" = "Success" && "$(adb install -r chronus.apk | grep "Success")" = "Success" ]; then
+			fakeroot adb install -r tclhome.apk
+			fakeroot adb install -r chronus.apk
+			#if [ "$(fakeroot adb install -r tclhome.apk | grep "Success")" = "Success" && "$(fakeroot adb install -r chronus.apk | grep "Success")" = "Success" ]; then
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}Launcher ATV PRO MOD instalado com sucesso!${STD}"
 				echo ""
 				echo -e " ${BLU}*${STD} ${NEG}Ativando o novo Launcher, aguarde...${STD}" && sleep 1
 				# Desativa o Launcher padrão
-				adb shell pm disable-user --user 0 com.google.android.tvlauncher
-				if [ "$(adb shell pm disable-user --user 0 com.google.android.tvlauncher | grep disabled-user | cut -f5 -d " ")" = "disabled-user" ]; then
+				fakeroot adb shell pm disable-user --user 0 com.google.android.tvlauncher
+				if [ "$(fakeroot adb shell pm disable-user --user 0 com.google.android.tvlauncher | grep disabled-user | cut -f5 -d " ")" = "disabled-user" ]; then
 					echo "Launcher ATV PRO MOD ativo com sucesso!"
 					echo "Ativando a nova Launcher ATV PRO MOD..." && sleep 2
-					adb shell monkey -p com.tcl.home -c android.intent.category.LAUNCHER 1
+					fakeroot adb shell monkey -p com.tcl.home -c android.intent.category.LAUNCHER 1
 					if [ "$?" -eq "0" ]; then
 						echo ""
 						echo -e " ${GRE}*${STD} ${NEG}Launcher ATV PRO MOD ativado com sucesso!${STD}"
@@ -510,7 +511,7 @@ install_launcher(){
 				echo ""
 				echo -e " ${BLU}*${STD} ${NEG}Atualizando as permissões...${STD}" && sleep 1
 				# Seta permissão para o widget
-				adb shell appwidget grantbind --package com.tcl.home --user 0
+				fakeroot adb shell appwidget grantbind --package com.tcl.home --user 0
 				if [ "$?" -ne "0" ]; then
 					pause " Erro ao setar permissões, verifique sua conexão. Tecle [Enter] para continuar." ; menu_launcher
 				else
@@ -526,16 +527,16 @@ install_launcher(){
 
 # Desativar Launcher ATV Pro TCL Mod + Widget
 desativar_launcher(){
-	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.tcl.home)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.tcl.home)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Ativando Lauche Padrão...${STD}" && sleep 2
 		echo ""
-		adb shell pm enable com.google.android.tvlauncher
+		fakeroot adb shell pm enable com.google.android.tvlauncher
 		if [ "$?" -eq "0" ]; then
 			echo ""
 			echo -e " ${CIN}*${STD} ${NEG}Desativando Launcher ATV PRO MOD...${STD}" && sleep 2
 			echo ""
-			adb shell pm disable-user --user 0 com.tcl.home
+			fakeroot adb shell pm disable-user --user 0 com.tcl.home
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${CIN}*${STD} ${NEG}Launcher ATV PRO MOD desativado com sucesso!${STD}" && sleep 1
@@ -543,7 +544,7 @@ desativar_launcher(){
 			else
 				pause " Erro ao desativar o Launcher ATV PRO MOD, verifique sua conexão. Tecle [Enter] para continuar." ; menu_launcher
 			fi
-			adb shell am start -n com.google.android.tvlauncher/.MainActivity
+			fakeroot adb shell am start -n com.google.android.tvlauncher/.MainActivity
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}Configurado o Launcher padrão da Android TV com sucesso!${STD}"
@@ -571,16 +572,16 @@ desativar_launcher(){
 # Desativar a GoogleTV Home
 desativar_googletv(){
 
-	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.google.android.apps.tv.launcherx)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.google.android.apps.tv.launcherx)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Ativando Launcher Padrão...${STD}" && sleep 2
 		echo ""
-		adb shell pm enable com.google.android.tvlauncher
+		fakeroot adb shell pm enable com.google.android.tvlauncher
 		if [ "$?" -eq "0" ]; then
 			echo ""
 			echo -e " ${CIN}*${STD} ${NEG}Desativando GoogleTV Home...${STD}" && sleep 2
 			echo ""
-			adb shell pm disable-user --user 0 com.google.android.apps.tv.launcherx
+			fakeroot adb shell pm disable-user --user 0 com.google.android.apps.tv.launcherx
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${CIN}*${STD} ${NEG}GoogleTV Home desativado com sucesso!${STD}" && sleep 1
@@ -588,7 +589,7 @@ desativar_googletv(){
 			else
 				pause " Erro ao desativar o GoogleTV Home, verifique sua conexão. Tecle [Enter] para continuar." ; menu_googletv
 			fi
-			adb shell am start -n com.google.android.tvlauncher/.MainActivity
+			fakeroot adb shell am start -n com.google.android.tvlauncher/.MainActivity
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}Configurado o Launcher padrão da Android TV com sucesso!${STD}"
@@ -617,7 +618,7 @@ desativar_googletv(){
 
 # Instalar Aptoide TV
 install_aptoidetv(){
-	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep cm.aptoidetv.pt)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep cm.aptoidetv.pt)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Aptoide TV já está instalado.${STD}"
 		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
@@ -633,7 +634,7 @@ install_aptoidetv(){
 		else
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Instalando o Aptoide TV, aguarde...${STD}" && sleep 1
-			adb install -r aptoide.apk
+			fakeroot adb install -r aptoide.apk
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}Aptoide TV instalado com sucesso!${STD}"
@@ -648,7 +649,7 @@ install_aptoidetv(){
 
 # Instalar Deezer
 install_deezer(){
-	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep deezer.android.tv)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep deezer.android.tv)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Deezer já está instalado.${STD}"
 		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
@@ -663,7 +664,7 @@ install_deezer(){
 		else
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Instalando o Deezer, aguarde...${STD}"
-			adb install -r deezer.apk
+			fakeroot adb install -r deezer.apk
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}Deezer instalado com sucesso!${STD}"
@@ -678,7 +679,7 @@ install_deezer(){
 
 # Instalar Spotify
 install_spotify(){
-	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.spotify.tv.android)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.spotify.tv.android)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Spotify já está instalado.${STD}"
 		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
@@ -693,7 +694,7 @@ install_spotify(){
 		else
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Instalando o Spotify, aguarde...${STD}"
-			adb install -r spotify.apk
+			fakeroot adb install -r spotify.apk
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}Spotify instalado com sucesso!${STD}"
@@ -708,7 +709,7 @@ install_spotify(){
 
 # Instalar TV Bro
 install_tvbro(){
-	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.phlox.tvwebbrowser)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.phlox.tvwebbrowser)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}TV Bro já está instalado.${STD}"
 		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
@@ -723,7 +724,7 @@ install_tvbro(){
 		else
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Instalando o TV Bro, aguarde...${STD}"
-			adb install -r tvbro.apk
+			fakeroot adb install -r tvbro.apk
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}TV Bro instalado com sucesso!${STD}"
@@ -738,7 +739,7 @@ install_tvbro(){
 
 # Instalar Smart Youtube Next
 install_stubenext(){
-	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.liskovsoft.videomanager)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.liskovsoft.videomanager)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Smart Youtube Next já está instalado.${STD}"
 		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
@@ -753,7 +754,7 @@ install_stubenext(){
 		else
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Instalando o Smart Youtube Next, aguarde...${STD}"
-			adb install -r stubenext.apk
+			fakeroot adb install -r stubenext.apk
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}Smart Youtube instalado com sucesso!${STD}"
@@ -768,7 +769,7 @@ install_stubenext(){
 
 # Instalar Send Files
 install_sendfiles(){
-	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.crunhyroll.crunchyroid)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.crunhyroll.crunchyroid)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Send Files já está instalado.${STD}"
 		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
@@ -783,7 +784,7 @@ install_sendfiles(){
 		else
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Instalando o Send Files, aguarde...${STD}"
-			adb install -r sendfiles.apk
+			fakeroot adb install -r sendfiles.apk
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}Send Files instalado com sucesso!${STD}"
@@ -798,7 +799,7 @@ install_sendfiles(){
 
 # Instalar Youcine
 install_youcine(){
-	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.stremio.one)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.stremio.one)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Youcine já está instalado.${STD}"
 		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
@@ -813,7 +814,7 @@ install_youcine(){
 		else
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Instalando o Youcine, aguarde...${STD}"
-			adb install -r youcine.apk
+			fakeroot adb install -r youcine.apk
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}Youcine instalado com sucesso!${STD}"
@@ -828,7 +829,7 @@ install_youcine(){
 
 # Instalar X-Plore
 install_xplore(){
-	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.lonelycatgames.Xplore)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.lonelycatgames.Xplore)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}X-Plore já está instalado.${STD}"
 		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
@@ -843,7 +844,7 @@ install_xplore(){
 		else
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Instalando o X-Plore, aguarde...${STD}"
-			adb install -r Xplore.apk
+			fakeroot adb install -r Xplore.apk
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}X-Plore instalado com sucesso!${STD}"
@@ -858,7 +859,7 @@ install_xplore(){
 
 # Instalar Setting (Troca Launcher)
 install_setting(){
-	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep dp.ws.popcorntime)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep dp.ws.popcorntime)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Setting já está instalado.${STD}"
 		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
@@ -873,7 +874,7 @@ install_setting(){
 		else
 			echo ""
 			echo -e " ${BLU}*${STD} ${NEG}Instalando o Setting, aguarde...${STD}"
-			adb install -r setting.apk
+			fakeroot adb install -r setting.apk
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${GRE}*${STD} ${NEG}Setting instalado com sucesso!${STD}"
@@ -888,7 +889,7 @@ install_setting(){
 
 # Instalar Photo Galley
 #install_photogalley(){
-#	if [ "$(adb shell pm list packages -e | cut -f2 -d: | grep com.furnaghan.android.photoscreensaver)" != "" ]; then
+#	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.furnaghan.android.photoscreensaver)" != "" ]; then
 #		echo ""
 #		echo -e " ${GRE}*${STD} ${NEG}Photo Galley já está instalado.${STD}"
 #		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
@@ -903,7 +904,7 @@ install_setting(){
 #		else
 #			echo ""
 #			echo -e " ${BLU}*${STD} ${NEG}Instalando o Photo Galley, aguarde...${STD}"
-#			adb install -r photogallery.apk
+#			fakeroot adb install -r photogallery.apk
 #			if [ "$?" -eq "0" ]; then
 #				echo ""
 #				echo -e " ${GRE}*${STD} ${NEG}Photo Galley instalado com sucesso!${STD}"
@@ -935,7 +936,7 @@ gravar_tela(){
 	echo ""
 	# Testa se o diretório já existe, senão cria
 	CAMINHO="/sdcard/ADB\ Recording"
-	adb shell mkdir -p $CAMINHO
+	fakeroot adb shell mkdir -p $CAMINHO
 	echo -e " ${NEG}O arquivo será gravado em:${STD}"
 	echo -e " ${ROS}$CAMINHO${STD}"
 	echo ""
@@ -945,7 +946,7 @@ gravar_tela(){
 	read REC
 	for i in {000..999}; do
 		echo -e " ${BLU}*${STD} ${NEG}Gravando vídeo $REC-${i}.mp4 ...${STD}"
-		adb shell screenrecord --bit-rate 100000000 --size 1280x720 "$CAMINHO/$REC-${i}.mp4"
+		fakeroot adb shell screenrecord --bit-rate 100000000 --size 1280x720 "$CAMINHO/$REC-${i}.mp4"
 		if [ "$?" -eq "0" ]; then
 			echo ""
 			echo -e " ${GRE}*${STD} ${NEG}Vídeo $REC-${i}.mp4 gravado com sucesso!${STD}"
@@ -972,7 +973,7 @@ menu_principal(){
 		if [ "$?" -ne 0 ]; then
 			echo -e " ${NEG}Status:${STD} ${RED}Desconectado${STD} ${NEG}via adb${STD}"
 		else
-			if [ "$(adb connect $IP | cut -f1 -d" " | grep -e connected -e already)" != "" ]; then
+			if [ "$(fakeroot adb connect $IP | cut -f1 -d" " | grep -e connected -e already)" != "" ]; then
 				echo -e " ${NEG}Status:${STD} ${GRE}Conectado${STD} ${NEG}via adb${STD}"
 			else
 				echo -e " ${NEG}Status:${STD} ${RED}Desconectado${STD} ${NEG}via adb.${STD}"
@@ -1007,7 +1008,7 @@ menu_principal(){
 			5 ) menu_googletv ;;
 			6 ) menu_install_apps ;;
 			7 ) gravar_tela ;;
-			0 ) exit ; adb disconnect $IP >/dev/null ;;
+			0 ) exit ; fakeroot adb disconnect $IP >/dev/null ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${ROS}3${STD}${NEG},${STD} ${ROS}4${STD}${NEG},${STD} ${ROS}5${STD},${STD} ${ROS}6${STD} ${NEG}ou${STD} ${ROS}0 para Sair${STD}"; 
 		esac
 	done
