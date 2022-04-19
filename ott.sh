@@ -769,7 +769,7 @@ install_stubenext(){
 
 # Instalar Send Files
 install_sendfiles(){
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.crunhyroll.crunchyroid)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.yablio.sendfilestotv)" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Send Files já está instalado.${STD}"
 		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
@@ -777,7 +777,7 @@ install_sendfiles(){
 		# Baixa o Send Files
 		echo ""
 		echo -e " ${BLU}*${STD} ${NEG}Baixando o Send Files...${STD}" && sleep 1
-		wget https://cloud.t4l35.host/s/XfnGHSMZeNpnaA6/download/sendfiles.apk && clear
+		wget https://github.com/mickaelmendes50/optimize_android_tv/raw/master/prebuilt/SendFiles.apk && clear
 		if [ "$?" -ne 0 ]; then
 			echo ""
 			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
