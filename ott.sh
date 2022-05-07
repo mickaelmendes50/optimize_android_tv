@@ -55,13 +55,13 @@ pause(){
 
 # Verifica se está usando Termux
 termux(){
-	pkg update -y -o Dpkg::Options::=--force-confold
 	clear
 	echo -e " ${NEG}Bem vindo(a) ao script OTT (Otimização TV TCL)${STD}"
 	echo -e " ${NEG}Modelos compatíveis: RT51, RT41 e R51M.${STD}"
 	separacao
 	echo ""
 	echo -e " ${BLU}*${STD} ${NEG}Baixando dependências para utilizar o script no Termux...${SDT}" && sleep 2
+	pkg update -y -o Dpkg::Options::=--force-confold
 	pkg install -y ncurses-utils && pkg install -y android-tools && pkg install -y wget && pkg install -y fakeroot && clear
 	if [ "$?" -eq "0" ]; then
 		echo ""
