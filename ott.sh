@@ -6,7 +6,7 @@
 # https://adbshell.com/commands/adb-shell-pm-list-packages
 
 # Versão do script
-VER="v0.3.42"
+VER="v0.4.00"
 
 # Definição de Cores
 # Tabela de cores: https://misc.flogisoft.com/_media/bash/colors_format/256_colors_fg.png
@@ -890,7 +890,8 @@ menu_principal(){
 	option=0
 	until [ "$option" = "6" ]; do
 		echo ""
-		echo -e " ${CYA}OTMIZAÇÃO TV TCL PLATAFORMAS: RT41, RT51 e R51M ${STD} - ${YEL}$VER${STD}"
+		echo -e " ${CYA}OTMIZAÇÃO TV TCL PLATAFORMAS: RT41, RT51 e R51M ${STD}"
+		echo -e " ${YEL}$VER${STD}"
 
 		# Verifica o Status da TV, se está conectada ou não via ADB
 		ping -c 1 $IP >/dev/null 2>&1
