@@ -345,7 +345,7 @@ linha() {
 }
 # Desativar/Ativar Apps - FIM
 
-# Instalar GoogleTV launcher
+# Instalar Launcher Customizado
 install_CustomLauncher() {
     echo ""
     echo -e " ${BLU}*${STD} ${NEG}Aguarde a instalação do ${1}...${STD}" && sleep 2
@@ -571,25 +571,28 @@ desativar_launcher(){
 	pause " Tecle [Enter] para retornar ao menu" ; menu_launcher
 }
 
-# Desativar a GoogleTV Home
-desativar_googletv(){
+# Desativar o Launcher Customizado Home
+disable_CustomLauncher(){
+    if [ "${1}" = "GoogleTV" ]; then
+        LAUNCHER_PACKAGE='com.google.android.apps.tv.launcherx'
+    fi
 
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.google.android.apps.tv.launcherx)" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep ${LAUNCHER_PACKAGE})" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Ativando Launcher Padrão...${STD}" && sleep 2
 		echo ""
 		fakeroot adb shell pm enable com.google.android.tvlauncher
 		if [ "$?" -eq "0" ]; then
 			echo ""
-			echo -e " ${CIN}*${STD} ${NEG}Desativando GoogleTV Home...${STD}" && sleep 2
+			echo -e " ${CIN}*${STD} ${NEG}Desativando ${1}...${STD}" && sleep 2
 			echo ""
-			fakeroot adb shell pm disable-user --user 0 com.google.android.apps.tv.launcherx
+			fakeroot adb shell pm disable-user --user 0 "${LAUNCHER_PACKAGE}"
 			if [ "$?" -eq "0" ]; then
 				echo ""
-				echo -e " ${CIN}*${STD} ${NEG}GoogleTV Home desativado com sucesso!${STD}" && sleep 1
+				echo -e " ${CIN}*${STD} ${NEG}${1} desativado com sucesso!${STD}" && sleep 1
 				echo ""
 			else
-				pause " Erro ao desativar o GoogleTV Home, verifique sua conexão. Tecle [Enter] para continuar." ; menu_googletv
+				pause " Erro ao desativar o ${1}, verifique sua conexão. Tecle [Enter] para continuar." ; menu_googletv
 			fi
 			fakeroot adb shell am start -n com.google.android.tvlauncher/.MainActivity
 			if [ "$?" -eq "0" ]; then
@@ -604,13 +607,13 @@ desativar_googletv(){
 			fi
 		else
 			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao desativar GoogleTV Home.${STD}"
+			echo -e " ${RED}*${STD} ${NEG}Erro ao desativar ${1}.${STD}"
 			echo ""
 			pause " Tecle [Enter] para retornar ao menu" ; menu_googletv
 		fi
 	else
 		echo ""
-		echo -e " ${ROS}*${STD} ${NEG}GoogleTV Home ainda não instalado.${STD}"
+		echo -e " ${ROS}*${STD} ${NEG}${1} ainda não instalado.${STD}"
 		echo ""
 	fi
 	pause " Tecle [Enter] para retornar ao menu" ; menu_googletv
@@ -1077,7 +1080,7 @@ menu_googletv(){
 		read -p " Digite um número:" option
 		case $option in
 			1 ) install_CustomLauncher "GoogleTV";;
-			2 ) desativar_googletv ;;
+			2 ) disable_CustomLauncher "GoogleTV";;
 			3 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
 		esac
