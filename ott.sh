@@ -524,50 +524,6 @@ install_launcher(){
 	pause " Tecle [Enter] para retornar ao menu." ; menu_launcher
 }
 
-# Desativar Launcher ATV Pro TCL Mod + Widget
-desativar_launcher(){
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.tcl.home)" != "" ]; then
-		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}Ativando Lauche Padrão...${STD}" && sleep 2
-		echo ""
-		fakeroot adb shell pm enable com.google.android.tvlauncher
-		if [ "$?" -eq "0" ]; then
-			echo ""
-			echo -e " ${CIN}*${STD} ${NEG}Desativando Launcher ATV PRO MOD...${STD}" && sleep 2
-			echo ""
-			fakeroot adb shell pm disable-user --user 0 com.tcl.home
-			if [ "$?" -eq "0" ]; then
-				echo ""
-				echo -e " ${CIN}*${STD} ${NEG}Launcher ATV PRO MOD desativado com sucesso!${STD}" && sleep 1
-				echo ""
-			else
-				pause " Erro ao desativar o Launcher ATV PRO MOD, verifique sua conexão. Tecle [Enter] para continuar." ; menu_launcher
-			fi
-			fakeroot adb shell am start -n com.google.android.tvlauncher/.MainActivity
-			if [ "$?" -eq "0" ]; then
-				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}Configurado o Launcher padrão da Android TV com sucesso!${STD}"
-				echo ""
-			else
-				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro abrir o Launcher padrão, verifique sua conexão.${STD}"
-				echo ""
-				pause " Tecle [Enter] para retornar ao menu" ; menu_launcher
-			fi
-		else
-			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao desativar Launcher ATV PRO MOD.${STD}"
-			echo ""
-			pause " Tecle [Enter] para retornar ao menu" ; menu_launcher
-		fi
-	else
-		echo ""
-		echo -e " ${ROS}*${STD} ${NEG}Launcher ATV PRO MOD ainda não instalado.${STD}"
-		echo ""
-	fi
-	pause " Tecle [Enter] para retornar ao menu" ; menu_launcher
-}
-
 # Desativar o Launcher Customizado
 disable_CustomLauncher(){
 
@@ -1019,7 +975,7 @@ menu_launcher(){
 		read -p " Digite um número:" option
 		case $option in
 			1 ) install_launcher ;;
-			2 ) desativar_launcher ;;
+			2 ) disable_CustomLauncher "ATV Pro MOD" "com.tcl.home";;
 			3 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
 		esac
