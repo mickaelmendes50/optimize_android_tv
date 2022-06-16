@@ -891,37 +891,6 @@ install_setting(){
 	fi
 	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
 }
-
-# Instalar Photo Galley
-#install_photogalley(){
-#	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.furnaghan.android.photoscreensaver)" != "" ]; then
-#		echo ""
-#		echo -e " ${GRE}*${STD} ${NEG}Photo Galley já está instalado.${STD}"
-#		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
-#	else
-#		# Baixa o Photo Galley
-#		echo ""
-#		echo -e " ${BLU}*${STD} ${NEG}Baixando o Photo Galley...${STD}" && sleep 1
-#		wget --content-disposition https://cloud.talesam.org/s/ExKbcZKYeXZgimk/download && clear
-#		if [ "$?" -ne 0 ]; then
-#			echo ""
-#			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
-#		else
-#			echo ""
-#			echo -e " ${BLU}*${STD} ${NEG}Instalando o Photo Galley, aguarde...${STD}"
-#			fakeroot adb install -r photogallery.apk
-#			if [ "$?" -eq "0" ]; then
-#				echo ""
-#				echo -e " ${GRE}*${STD} ${NEG}Photo Galley instalado com sucesso!${STD}"
-#			else
-#				echo ""
-#				echo -e " ${RED}*${STD} ${NEG}Erro na instalação.${STD}"
-#			fi
-#		fi
-#	fi
-#	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
-#}
-
 # --- INSTALAR NOVOS APPS - FIM
 
 # Gravação de tela
@@ -1125,7 +1094,6 @@ menu_install_apps(){
 		echo -e " ${BLU}7.${STD} Youcine - v1.1.2"
 		echo -e " ${BLU}8.${STD} X-Plore - v4.27.65"
 		echo -e " ${BLU}9.${STD} Setting (Trocar Launcher)"
-		#echo -e " ${BLU}10.${STD} Photo Galley"
 		echo -e " ${BLU}0.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
 		echo ""
 		read -p " Digite um número:" option
@@ -1139,7 +1107,6 @@ menu_install_apps(){
 			7 ) install_youcine ;;
 			8 ) install_xplore ;;
 			9 ) install_setting ;;
-			#10 ) install_photogalley ;;
 			0 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${ROS}3${STD}${NEG},${STD} ${ROS}4${STD}${NEG},${STD} ${ROS}5${STD}${NEG},${STD} ${ROS}6${STD}${NEG},${STD} ${ROS}7${STD}${NEG},${STD} ${ROS}8${STD}${NEG},${STD} ${ROS}9${STD}${NEG},${STD} ${NEG}ou${STD} ${ROS}0 para sair${STD}";
 		esac
