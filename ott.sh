@@ -969,7 +969,7 @@ gravar_tela(){
 menu_principal(){
 	clear
 	option=0
-	until [ "$option" = "7" ]; do
+	until [ "$option" = "6" ]; do
 		echo ""
 		echo -e " ${CYA}OTMIZAÇÃO TV TCL PLATAFORMAS: RT41, RT51 e R51M ${STD} - ${YEL}$VER${STD}"
 
@@ -998,10 +998,9 @@ menu_principal(){
 		echo -e " ${BLU}1.${STD} ${RED009}Remover apps lixo (RT51)${STD}"
 		echo -e " ${BLU}2.${STD} ${RED009}Remover apps lixo (RT41)${STD}"
 		echo -e " ${BLU}3.${STD} ${GRY247}Desativar${STD}/${GRE046}Ativar apps${STD}"
-		echo -e " ${BLU}4.${STD} ${BLU039}Launcher ATV Pro TCL Mod + Widget${STD}"
-		echo -e " ${BLU}5.${STD} ${BLU039}Instalar Launcher${STD}"
-		echo -e " ${BLU}6.${STD} ${GRE046}Instalar novos apps${STD}"
-		echo -e " ${BLU}7.${STD} ${AMA226}Gravar Tela da TV${STD} ${NEG}*EXPERIMENTAL*${STD}"
+		echo -e " ${BLU}4.${STD} ${BLU039}Instalar Launcher${STD}"
+		echo -e " ${BLU}5.${STD} ${GRE046}Instalar novos apps${STD}"
+		echo -e " ${BLU}6.${STD} ${AMA226}Gravar Tela da TV${STD} ${NEG}*EXPERIMENTAL*${STD}"
 		echo -e " ${BLU}0.${STD} ${RED}Sair${STD}"
 		echo ""
 		read -p " Digite um número e tecle [Enter]:" option
@@ -1009,10 +1008,9 @@ menu_principal(){
 			1 ) rm_apps_rt51 ;;
 			2 ) rm_apps_rt41 ;;
 			3 ) menu_ativar_desativar ;;
-			4 ) menu_launcher ;;
-			5 ) menu_SelectCustomLauncher ;;
-			6 ) menu_install_apps ;;
-			7 ) gravar_tela ;;
+			4 ) menu_SelectCustomLauncher ;;
+			5 ) menu_install_apps ;;
+			6 ) gravar_tela ;;
 			0 ) exit ; fakeroot adb disconnect $IP >/dev/null ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${ROS}3${STD}${NEG},${STD} ${ROS}4${STD}${NEG},${STD} ${ROS}5${STD},${STD} ${ROS}6${STD} ${NEG}ou${STD} ${ROS}0 para Sair${STD}"; 
 		esac
@@ -1048,7 +1046,7 @@ menu_launcher(){
 	option=0
 	until [ "$option" = "3" ]; do
 		separacao
-		echo -e " ${ROX027}Instalar e Ativar Launcher ATV PRO MOD${STD}"
+		echo -e " ${ROX027}Launcher ATV PRO MOD${STD}"
 		separacao
 		echo ""
 		echo -e " ${BLU}1.${STD} ${GRE046}Instalar e ativar Launcher${STD}"
@@ -1073,13 +1071,15 @@ menu_SelectCustomLauncher() {
 		echo -e " ${ROX027}Escolha o Launcher${STD}"
 		separacao
 		echo ""
-		echo -e " ${BLU}1.${STD} ${BLU039}GoogleTV${STD}"
-		echo -e " ${BLU}2.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
+		echo -e " ${BLU}1.${STD} ${BLU039}Launcher ATV Pro TCL Mod + Widget${STD}"
+		echo -e " ${BLU}2.${STD} ${BLU039}GoogleTV${STD}"
+		echo -e " ${BLU}0.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
 		echo ""
 		read -p " Digite um número:" option
 		case $option in
-			1 ) menu_InstallCustomLauncher "GoogleTV";;
-			2 ) menu_principal ;;
+			1 ) menu_launcher;;
+			2 ) menu_InstallCustomLauncher "GoogleTV";;
+			0 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG}${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
 		esac
 	done
