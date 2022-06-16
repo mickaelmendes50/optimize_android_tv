@@ -356,7 +356,7 @@ install_CustomLauncher() {
     wget "https://github.com/mickaelmendes50/optimize_android_tv/raw/master/prebuilt/${1}.apk" -O "${1}.apk"
 
     if [ "$?" -ne 0 ]; then
-        pause " Erro ao baixar os arquivos, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
+        pause " Erro ao baixar os arquivos, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}" "${2}"
     else
         # Instala o Launcher usando ADB
         echo ""
@@ -370,16 +370,9 @@ install_CustomLauncher() {
             # Ativando o Launcher
             echo ""
             echo -e " ${BLU}*${STD} ${NEG}Ativando o novo Launcher, aguarde...${STD}" && sleep 1
-            if [ "${1}" = "GoogleTV" ]; then
-                LAUNCHER_PACKAGE='com.google.android.apps.tv.launcherx'
-			elif [ "${1}" = "FLauncher" ]; then
-				LAUNCHER_PACKAGE='me.efesser.flauncher'
-			elif [ "${1}" = "WolfLauncher" ]; then
-				LAUNCHER_PACKAGE='com.wolf.firelauncher'
-			fi
 
-            fakeroot adb shell pm enable "${LAUNCHER_PACKAGE}"
-            if [ "$(fakeroot adb shell pm enable "${LAUNCHER_PACKAGE}" | grep enable | cut -f5 -d " ")" = "enabled" ]; then
+            fakeroot adb shell pm enable "${2}"
+            if [ "$(fakeroot adb shell pm enable "${2}" | grep enable | cut -f5 -d " ")" = "enabled" ]; then
                 echo ""
                 echo -e " ${GRE}*${STD} ${NEG}${1} Home ativado com sucesso!${STD}"
 
@@ -391,16 +384,16 @@ install_CustomLauncher() {
                     echo ""
                     echo -e " ${GRE}*${STD} ${NEG}Launcher padrão desativado com sucesso!${STD}" && sleep 2
                 else
-                    pause " Falha ao desativar o launcher padrão, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
+                    pause " Falha ao desativar o launcher padrão, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}" "${2}"
                 fi
             else
-                pause " Falha ao ativar o ${1}, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
+                pause " Falha ao ativar o ${1}, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}" "${2}"
             fi
         else
-	    pause " Erro ao instalar o ${1}, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
+	    pause " Erro ao instalar o ${1}, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}" "${2}"
         fi
     fi
-    pause " Tecle [Enter] para retornar ao menu." ; menu_InstallCustomLauncher "${1}"
+    pause " Tecle [Enter] para retornar ao menu." ; menu_InstallCustomLauncher "${1}" "${2}"
 }
 
 # Instalar e ativar Launcher ATV Pro TCL Mod + Widget
@@ -577,15 +570,8 @@ desativar_launcher(){
 
 # Desativar o Launcher Customizado
 disable_CustomLauncher(){
-    if [ "${1}" = "GoogleTV" ]; then
-        LAUNCHER_PACKAGE='com.google.android.apps.tv.launcherx'
-	elif [ "${1}" = "FLauncher" ]; then
-		LAUNCHER_PACKAGE='me.efesser.flauncher'
-	elif [ "${1}" = "WolfLauncher" ]; then
-		LAUNCHER_PACKAGE='com.wolf.firelauncher'
-	fi
 
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep ${LAUNCHER_PACKAGE})" != "" ]; then
+	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep ${2})" != "" ]; then
 		echo ""
 		echo -e " ${GRE}*${STD} ${NEG}Ativando Launcher Padrão...${STD}" && sleep 2
 		echo ""
@@ -594,13 +580,13 @@ disable_CustomLauncher(){
 			echo ""
 			echo -e " ${CIN}*${STD} ${NEG}Desativando ${1}...${STD}" && sleep 2
 			echo ""
-			fakeroot adb shell pm disable-user --user 0 "${LAUNCHER_PACKAGE}"
+			fakeroot adb shell pm disable-user --user 0 "${2}"
 			if [ "$?" -eq "0" ]; then
 				echo ""
 				echo -e " ${CIN}*${STD} ${NEG}${1} desativado com sucesso!${STD}" && sleep 1
 				echo ""
 			else
-				pause " Erro ao desativar o ${1}, verifique sua conexão. Tecle [Enter] para continuar." ; menu_InstallCustomLauncher "${1}"
+				pause " Erro ao desativar o ${1}, verifique sua conexão. Tecle [Enter] para continuar." ; menu_InstallCustomLauncher "${1}" "${2}"
 			fi
 			fakeroot adb shell am start -n com.google.android.tvlauncher/.MainActivity
 			if [ "$?" -eq "0" ]; then
@@ -611,20 +597,20 @@ disable_CustomLauncher(){
 				echo ""
 				echo -e " ${RED}*${STD} ${NEG}Erro abrir o Launcher padrão, verifique sua conexão.${STD}"
 				echo ""
-				pause " Tecle [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
+				pause " Tecle [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}" "${2}"
 			fi
 		else
 			echo ""
 			echo -e " ${RED}*${STD} ${NEG}Erro ao desativar ${1}.${STD}"
 			echo ""
-			pause " Tecle [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
+			pause " Tecle [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}" "${2}"
 		fi
 	else
 		echo ""
 		echo -e " ${ROS}*${STD} ${NEG}${1} ainda não instalado.${STD}"
 		echo ""
 	fi
-	pause " Tecle [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
+	pause " Tecle [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}" "${2}"
 }
 
 # --- INSTALAR NOVOS APPS - INÍCIO
@@ -1057,9 +1043,9 @@ menu_SelectCustomLauncher() {
 		read -p " Digite um número: " option
 		case $option in
 			1 ) menu_launcher;;
-			2 ) menu_InstallCustomLauncher "GoogleTV";;
-			3 ) menu_InstallCustomLauncher "FLauncher";;
-			4 ) menu_InstallCustomLauncher "WolfLauncher";;
+			2 ) menu_InstallCustomLauncher "GoogleTV" "com.google.android.apps.tv.launcherx";;
+			3 ) menu_InstallCustomLauncher "FLauncher" "me.efesser.flauncher";;
+			4 ) menu_InstallCustomLauncher "WolfLauncher" "com.wolf.firelauncher";;
 			0 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG}${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
 		esac
@@ -1080,8 +1066,8 @@ menu_InstallCustomLauncher() {
 		echo ""
 		read -p " Digite um número: " option
 		case $option in
-			1 ) install_CustomLauncher "${1}";;
-			2 ) disable_CustomLauncher "${1}";;
+			1 ) install_CustomLauncher "${1}" "${2}";;
+			2 ) disable_CustomLauncher "${1}" "${2}";;
 			3 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
 		esac
