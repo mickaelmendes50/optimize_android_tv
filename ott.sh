@@ -372,7 +372,9 @@ install_CustomLauncher() {
             echo -e " ${BLU}*${STD} ${NEG}Ativando o novo Launcher, aguarde...${STD}" && sleep 1
             if [ "${1}" = "GoogleTV" ]; then
                 LAUNCHER_PACKAGE='com.google.android.apps.tv.launcherx'
-            fi
+			elif [ "${1}" = "FLauncher" ]; then
+				LAUNCHER_PACKAGE='me.efesser.flauncher'
+			fi
 
             fakeroot adb shell pm enable "${LAUNCHER_PACKAGE}"
             if [ "$(fakeroot adb shell pm enable "${LAUNCHER_PACKAGE}" | grep enable | cut -f5 -d " ")" = "enabled" ]; then
@@ -575,6 +577,8 @@ desativar_launcher(){
 disable_CustomLauncher(){
     if [ "${1}" = "GoogleTV" ]; then
         LAUNCHER_PACKAGE='com.google.android.apps.tv.launcherx'
+	elif [ "${1}" = "FLauncher" ]; then
+		LAUNCHER_PACKAGE='me.efesser.flauncher'
     fi
 
 	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep ${LAUNCHER_PACKAGE})" != "" ]; then
@@ -1035,19 +1039,21 @@ menu_launcher(){
 menu_SelectCustomLauncher() { 
 	clear
 	option=0
-	until [ "$option" = "2" ]; do
+	until [ "$option" = "3" ]; do
 		separacao
 		echo -e " ${ROX027}Escolha o Launcher${STD}"
 		separacao
 		echo ""
 		echo -e " ${BLU}1.${STD} ${BLU039}Launcher ATV Pro TCL Mod + Widget${STD}"
 		echo -e " ${BLU}2.${STD} ${BLU039}GoogleTV${STD}"
+		echo -e " ${BLU}3.${STD} ${BLU039}FLauncher${STD}"
 		echo -e " ${BLU}0.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
 		echo ""
 		read -p " Digite um número:" option
 		case $option in
 			1 ) menu_launcher;;
 			2 ) menu_InstallCustomLauncher "GoogleTV";;
+			3 ) menu_InstallCustomLauncher "FLauncher";;
 			0 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG}${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
 		esac
@@ -1059,11 +1065,11 @@ menu_InstallCustomLauncher() {
 	option=0
 	until [ "$option" = "3" ]; do
 		separacao
-		echo -e " ${ROX027}${1} Launcher${STD}"
+		echo -e " ${ROX027}${1}${STD}"
 		separacao
 		echo ""
-		echo -e " ${BLU}1.${STD} ${GRE046}Instalar/atualizar a ${1}${STD}"
-		echo -e " ${BLU}2.${STD} ${GRY247}Desativar a ${1}${STD}"
+		echo -e " ${BLU}1.${STD} ${GRE046}Instalar/atualizar${STD}"
+		echo -e " ${BLU}2.${STD} ${GRY247}Desativar${STD}"
 		echo -e " ${BLU}3.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
 		echo ""
 		read -p " Digite um número:" option
