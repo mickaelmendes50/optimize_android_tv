@@ -534,15 +534,15 @@ disable_CustomLauncher(){
 		fakeroot adb shell pm enable com.google.android.tvlauncher
 		if [ "$?" -eq "0" ]; then
 			echo ""
-			echo -e " ${CIN}*${STD} ${NEG}Desativando ${1}...${STD}" && sleep 2
+			echo -e " ${CIN}*${STD} ${NEG}Desinstalando ${1}...${STD}" && sleep 2
 			echo ""
-			fakeroot adb shell pm disable-user --user 0 "${2}"
+			fakeroot adb shell pm uninstall --user 0 "${2}"
 			if [ "$?" -eq "0" ]; then
 				echo ""
-				echo -e " ${CIN}*${STD} ${NEG}${1} desativado com sucesso!${STD}" && sleep 1
+				echo -e " ${CIN}*${STD} ${NEG}${1} desinstalado com sucesso!${STD}" && sleep 1
 				echo ""
 			else
-				pause " Erro ao desativar o ${1}, verifique sua conexão. Tecle [Enter] para continuar." ; menu_InstallCustomLauncher "${1}" "${2}"
+				pause " Erro ao desinstalar o ${1}, verifique sua conexão. Tecle [Enter] para continuar." ; menu_InstallCustomLauncher "${1}" "${2}"
 			fi
 			fakeroot adb shell am start -n com.google.android.tvlauncher/.MainActivity
 			if [ "$?" -eq "0" ]; then
@@ -1017,7 +1017,7 @@ menu_InstallCustomLauncher() {
 		separacao
 		echo ""
 		echo -e " ${BLU}1.${STD} ${GRE046}Instalar/atualizar${STD}"
-		echo -e " ${BLU}2.${STD} ${GRY247}Desativar${STD}"
+		echo -e " ${BLU}2.${STD} ${GRY247}Desinstalar${STD}"
 		echo -e " ${BLU}3.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
 		echo ""
 		read -p " Digite um número: " option
