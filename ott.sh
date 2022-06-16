@@ -346,36 +346,38 @@ linha() {
 # Desativar/Ativar Apps - FIM
 
 # Instalar GoogleTV launcher
-install_googletv(){
+install_CustomLauncher() {
+    echo ""
+    echo -e " ${BLU}*${STD} ${NEG}Aguarde a instalação do ${1}...${STD}" && sleep 2
 
+    # Baixa o Launcher selecionado (verificar versão no commit de upload mais recente)
     echo ""
-    echo -e " ${BLU}*${STD} ${NEG}Aguarde a instalação do GoogleTV Home...${STD}" && sleep 2
-    
-    # Baixa o app GoogleTV Home (verificar versão no commit de upload mais recente)
-    echo ""
-    echo -e " ${BLU}*${STD} ${NEG}Baixando o GoogleTV Home...${STD}" && sleep 1
-    wget https://github.com/mickaelmendes50/optimize_android_tv/raw/master/prebuilt/GoogleTV_Home.apk -O GoogleTV_Home.apk
+    echo -e " ${BLU}*${STD} ${NEG}Baixando o ${1}...${STD}" && sleep 1
+    wget "https://github.com/mickaelmendes50/optimize_android_tv/raw/master/prebuilt/${1}.apk" -O "${1}.apk"
 
     if [ "$?" -ne 0 ]; then
         pause " Erro ao baixar os arquivos, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
     else
-
-        # Instala o GoogleTV usando ADB
+        # Instala o Launcher usando ADB
         echo ""
-        echo -e " ${BLU}*${STD} ${NEG}Instalando GoogleTV Home...${STD}" && sleep 1
-        fakeroot adb install -r GoogleTV_Home.apk
+        echo -e " ${BLU}*${STD} ${NEG}Instalando ${1}...${STD}" && sleep 1
+        fakeroot adb install -r "${1}.apk"
 
         if [ "$?" -eq "0" ]; then
             echo ""
-            echo -e " ${GRE}*${STD} ${NEG}Google TV Home instalado com sucesso!${STD}"
+            echo -e " ${GRE}*${STD} ${NEG}${1} instalado com sucesso!${STD}"
 
-            # Ativando o GoogleTV
+            # Ativando o Launcher
             echo ""
             echo -e " ${BLU}*${STD} ${NEG}Ativando o novo Launcher, aguarde...${STD}" && sleep 1
-            fakeroot adb shell pm enable com.google.android.apps.tv.launcherx
-            if [ "$(fakeroot adb shell pm enable com.google.android.apps.tv.launcherx | grep enable | cut -f5 -d " ")" = "enabled" ]; then
+            if [ "${1}" = "GoogleTV" ]; then
+                LAUNCHER_PACKAGE='com.google.android.apps.tv.launcherx'
+            fi
+
+            fakeroot adb shell pm enable "${LAUNCHER_PACKAGE}"
+            if [ "$(fakeroot adb shell pm enable "${LAUNCHER_PACKAGE}" | grep enable | cut -f5 -d " ")" = "enabled" ]; then
                 echo ""
-                echo -e " ${GRE}*${STD} ${NEG}GoogleTV Home ativado com sucesso!${STD}"
+                echo -e " ${GRE}*${STD} ${NEG}${1} Home ativado com sucesso!${STD}"
 
                 # Desativa o Launcher padrão
                 echo ""
@@ -388,10 +390,10 @@ install_googletv(){
                     pause " Falha ao desativar o launcher padrão, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
                 fi
             else
-                pause " Falha ao ativar o GoogleTV, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
+                pause " Falha ao ativar o ${1}, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
             fi
         else
-	    pause " Erro ao instalar o GoogleTV, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
+	    pause " Erro ao instalar o ${1}, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
         fi
     fi
     pause " Tecle [Enter] para retornar ao menu." ; menu_googletv
@@ -1074,7 +1076,7 @@ menu_googletv(){
 		echo ""
 		read -p " Digite um número:" option
 		case $option in
-			1 ) install_googletv ;;
+			1 ) install_CustomLauncher "GoogleTV";;
 			2 ) desativar_googletv ;;
 			3 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
