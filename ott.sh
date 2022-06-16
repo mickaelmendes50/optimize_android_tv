@@ -569,279 +569,29 @@ disable_CustomLauncher(){
 	pause " Tecle [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}" "${2}"
 }
 
-# --- INSTALAR NOVOS APPS - INÍCIO
-
-# Instalar Aptoide TV
-install_aptoidetv(){
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep cm.aptoidetv.pt)" != "" ]; then
+# Instalar apps
+install_App() {
+	# Baixa o App
+	echo ""
+	echo -e " ${BLU}*${STD} ${NEG}Baixando o ${1}...${STD}" && sleep 1
+	wget https://github.com/mickaelmendes50/optimize_android_tv/raw/master/prebuilt/"${1}".apk && clear
+	if [ "$?" -ne 0 ]; then
 		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}Aptoide TV já está instalado.${STD}"
-		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
+		echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
 	else
-		# Baixa o Apdoide TV
 		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Baixando o Aptoide TV...${STD}" && sleep 1
-		wget https://cloud.talesam.org/s/76ZzGdWMGroaSaz/download/aptoide.apk && clear
-		if [ "$?" -ne 0 ]; then
+		echo -e " ${BLU}*${STD} ${NEG}Instalando o ${1}, aguarde...${STD}"
+		fakeroot adb install -r "${1}.apk"
+		if [ "$?" -eq "0" ]; then
 			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
-			pause " Tecle [Enter] para continuar." ; menu_launcher
+			echo -e " ${GRE}*${STD} ${NEG}${1} instalado com sucesso!${STD}"
 		else
 			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Instalando o Aptoide TV, aguarde...${STD}" && sleep 1
-			fakeroot adb install -r aptoide.apk
-			if [ "$?" -eq "0" ]; then
-				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}Aptoide TV instalado com sucesso!${STD}"
-			else
-				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro na instalação.${STD}"
-			fi
+			echo -e " ${RED}*${STD} ${NEG}Erro na instalação.${STD}"
 		fi
 	fi
-	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
+	pause "Tecle [Enter] para retonar ao menu" ; menu_InstallApps
 }
-
-# Instalar Deezer
-install_deezer(){
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep deezer.android.tv)" != "" ]; then
-		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}Deezer já está instalado.${STD}"
-		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
-	else
-		# Baixa o Deezer
-		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Baixando o Deezer...${STD}" && sleep 1
-		wget https://cloud.talesam.org/s/xbToRz4sC6ZKBRK/download/deezer.apk && clear
-		if [ "$?" -ne 0 ]; then
-			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
-		else
-			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Instalando o Deezer, aguarde...${STD}"
-			fakeroot adb install -r deezer.apk
-			if [ "$?" -eq "0" ]; then
-				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}Deezer instalado com sucesso!${STD}"
-			else
-				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro na instalação.${STD}"
-			fi
-		fi
-	fi
-	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
-}
-
-# Instalar Spotify
-install_spotify(){
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.spotify.tv.android)" != "" ]; then
-		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}Spotify já está instalado.${STD}"
-		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
-	else
-		# Baixa o Spotify
-		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Baixando o Spotify...${STD}" && sleep 1
-		wget https://cloud.talesam.org/s/a2fPESw6f3J3RSZ/download/spotify.apk && clear
-		if [ "$?" -ne 0 ]; then
-			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
-		else
-			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Instalando o Spotify, aguarde...${STD}"
-			fakeroot adb install -r spotify.apk
-			if [ "$?" -eq "0" ]; then
-				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}Spotify instalado com sucesso!${STD}"
-			else
-				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro na instalação.${STD}"
-			fi
-		fi
-	fi
-	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
-}
-
-# Instalar TV Bro
-install_tvbro(){
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.phlox.tvwebbrowser)" != "" ]; then
-		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}TV Bro já está instalado.${STD}"
-		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
-	else
-		# Baixa o TV Bro
-		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Baixando o TV Bro...${STD}" && sleep 1
-		wget https://cloud.talesam.org/s/WBBoBmTiLcJ2obr/download/tvbro.apk && clear
-		if [ "$?" -ne 0 ]; then
-			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
-		else
-			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Instalando o TV Bro, aguarde...${STD}"
-			fakeroot adb install -r tvbro.apk
-			if [ "$?" -eq "0" ]; then
-				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}TV Bro instalado com sucesso!${STD}"
-			else
-				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro na instalação.${STD}"
-			fi
-		fi
-	fi
-	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
-}
-
-# Instalar Smart Youtube Next
-install_stubenext(){
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.liskovsoft.videomanager)" != "" ]; then
-		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}Smart Youtube Next já está instalado.${STD}"
-		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
-	else
-		# Baixa o Smart Youtube Next
-		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Baixando o Smart Youtube Next...${STD}" && sleep 1
-		wget https://cloud.talesam.org/s/qR3nk53f9Zpgaxo/download/stubenext.apk && clear
-		if [ "$?" -ne 0 ]; then
-			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
-		else
-			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Instalando o Smart Youtube Next, aguarde...${STD}"
-			fakeroot adb install -r stubenext.apk
-			if [ "$?" -eq "0" ]; then
-				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}Smart Youtube instalado com sucesso!${STD}"
-			else
-				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro na instalação.${STD}"
-			fi
-		fi
-	fi
-	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
-}
-
-# Instalar Send Files
-install_sendfiles(){
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.yablio.sendfilestotv)" != "" ]; then
-		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}Send Files já está instalado.${STD}"
-		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
-	else
-		# Baixa o Send Files
-		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Baixando o Send Files...${STD}" && sleep 1
-		wget https://github.com/mickaelmendes50/optimize_android_tv/raw/master/prebuilt/SendFiles.apk && clear
-		if [ "$?" -ne 0 ]; then
-			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
-		else
-			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Instalando o Send Files, aguarde...${STD}"
-			fakeroot adb install -r sendfiles.apk
-			if [ "$?" -eq "0" ]; then
-				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}Send Files instalado com sucesso!${STD}"
-			else
-				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro na instalação.${STD}"
-			fi
-		fi
-	fi
-	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
-}
-
-# Instalar Youcine
-install_youcine(){
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.stremio.one)" != "" ]; then
-		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}Youcine já está instalado.${STD}"
-		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
-	else
-		# Baixa o Stremio
-		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Baixando o Youcine...${STD}" && sleep 1
-		wget https://cloud.talesam.org/s/Jif8ccwfAsQe9Ps/download/youcine.apk && clear
-		if [ "$?" -ne 0 ]; then
-			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
-		else
-			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Instalando o Youcine, aguarde...${STD}"
-			fakeroot adb install -r youcine.apk
-			if [ "$?" -eq "0" ]; then
-				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}Youcine instalado com sucesso!${STD}"
-			else
-				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro na instalação.${STD}"
-			fi
-		fi
-	fi
-	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
-}
-
-# Instalar X-Plore
-install_xplore(){
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep com.lonelycatgames.Xplore)" != "" ]; then
-		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}X-Plore já está instalado.${STD}"
-		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
-	else
-		# Baixa o X-Plore
-		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Baixando o X-Plore...${STD}" && sleep 1
-		wget https://github.com/mickaelmendes50/optimize_android_tv/raw/master/prebuilt/XPlore.apk && clear
-		if [ "$?" -ne 0 ]; then
-			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
-		else
-			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Instalando o X-Plore, aguarde...${STD}"
-			fakeroot adb install -r Xplore.apk
-			if [ "$?" -eq "0" ]; then
-				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}X-Plore instalado com sucesso!${STD}"
-			else
-				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro na instalação.${STD}"
-			fi
-		fi
-	fi
-	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
-}
-
-# Instalar Setting (Troca Launcher)
-install_setting(){
-	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep dp.ws.popcorntime)" != "" ]; then
-		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}Setting já está instalado.${STD}"
-		pause " Tecle [Enter] para retornar ao menu Instalar Novos Apps" ; menu_install_apps
-	else
-		# Baixa o Setting
-		echo ""
-		echo -e " ${BLU}*${STD} ${NEG}Baixando o Setting...${STD}" && sleep 1
-		wget https://cloud.talesam.org/s/ZDX9nRGyoYmGrz9/download/setting.apk && clear
-		if [ "$?" -ne 0 ]; then
-			echo ""
-			echo -e " ${RED}*${STD} ${NEG}Erro ao baixar o arquivo. Verifique sua conexão ou tente mais tarde.${STD}"
-		else
-			echo ""
-			echo -e " ${BLU}*${STD} ${NEG}Instalando o Setting, aguarde...${STD}"
-			fakeroot adb install -r setting.apk
-			if [ "$?" -eq "0" ]; then
-				echo ""
-				echo -e " ${GRE}*${STD} ${NEG}Setting instalado com sucesso!${STD}"
-			else
-				echo ""
-				echo -e " ${RED}*${STD} ${NEG}Erro na instalação.${STD}"
-			fi
-		fi
-	fi
-	pause "Tecle [Enter] para retonar ao menu" ; menu_install_apps
-}
-# --- INSTALAR NOVOS APPS - FIM
 
 # Gravação de tela
 gravar_tela(){
@@ -929,7 +679,7 @@ menu_principal(){
 			2 ) rm_apps_rt41 ;;
 			3 ) menu_ativar_desativar ;;
 			4 ) menu_SelectCustomLauncher ;;
-			5 ) menu_install_apps ;;
+			5 ) menu_InstallApps ;;
 			6 ) gravar_tela ;;
 			0 ) exit ; fakeroot adb disconnect $IP >/dev/null ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${ROS}3${STD}${NEG},${STD} ${ROS}4${STD}${NEG},${STD} ${ROS}5${STD},${STD} ${ROS}6${STD} ${NEG}ou${STD} ${ROS}0 para Sair${STD}"; 
@@ -1032,7 +782,7 @@ menu_InstallCustomLauncher() {
 }
 
 # Menu instalar novos apps
-menu_install_apps(){ 
+menu_InstallApps() { 
 	clear
 	option=0
 	until [ "$option" = "10" ]; do
@@ -1048,20 +798,20 @@ menu_install_apps(){
 		echo -e " ${BLU}6.${STD} Send Files - v1.2.2"
 		echo -e " ${BLU}7.${STD} Youcine - v1.1.2"
 		echo -e " ${BLU}8.${STD} X-Plore - v4.27.65"
-		echo -e " ${BLU}9.${STD} Setting (Trocar Launcher)"
+		echo -e " ${BLU}9.${STD} Launcher Setting (Trocar Launcher)"
 		echo -e " ${BLU}0.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
 		echo ""
-		read -p " Digite um número:" option
+		read -p " Digite um número: " option
 		case $option in
-			1 ) install_aptoidetv ;;
-			2 ) install_deezer ;;
-			3 ) install_spotify ;;
-			4 ) install_tvbro ;;
-			5 ) install_stubenext ;;
-			6 ) install_sendfiles ;;
-			7 ) install_youcine ;;
-			8 ) install_xplore ;;
-			9 ) install_setting ;;
+			1 ) install_App "Aptoide" ;;
+			2 ) install_App "Deezer" ;;
+			3 ) install_App "Spotify" ;;
+			4 ) install_App "TV-Bro" ;;
+			5 ) install_App "StubeNext" ;;
+			6 ) install_App "SendFiles" ;;
+			7 ) install_App "Youcine" ;;
+			8 ) install_App "X-Plore" ;;
+			9 ) install_App "LauncherSetting" ;;
 			0 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${ROS}3${STD}${NEG},${STD} ${ROS}4${STD}${NEG},${STD} ${ROS}5${STD}${NEG},${STD} ${ROS}6${STD}${NEG},${STD} ${ROS}7${STD}${NEG},${STD} ${ROS}8${STD}${NEG},${STD} ${ROS}9${STD}${NEG},${STD} ${NEG}ou${STD} ${ROS}0 para sair${STD}";
 		esac
