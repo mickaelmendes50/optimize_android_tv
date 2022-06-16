@@ -571,7 +571,7 @@ desativar_launcher(){
 	pause " Tecle [Enter] para retornar ao menu" ; menu_launcher
 }
 
-# Desativar o Launcher Customizado Home
+# Desativar o Launcher Customizado
 disable_CustomLauncher(){
     if [ "${1}" = "GoogleTV" ]; then
         LAUNCHER_PACKAGE='com.google.android.apps.tv.launcherx'
@@ -999,7 +999,7 @@ menu_principal(){
 		echo -e " ${BLU}2.${STD} ${RED009}Remover apps lixo (RT41)${STD}"
 		echo -e " ${BLU}3.${STD} ${GRY247}Desativar${STD}/${GRE046}Ativar apps${STD}"
 		echo -e " ${BLU}4.${STD} ${BLU039}Launcher ATV Pro TCL Mod + Widget${STD}"
-		echo -e " ${BLU}5.${STD} ${BLU039}Launcher GoogleTV Home${STD}"
+		echo -e " ${BLU}5.${STD} ${BLU039}Instalar Launcher${STD}"
 		echo -e " ${BLU}6.${STD} ${GRE046}Instalar novos apps${STD}"
 		echo -e " ${BLU}7.${STD} ${AMA226}Gravar Tela da TV${STD} ${NEG}*EXPERIMENTAL*${STD}"
 		echo -e " ${BLU}0.${STD} ${RED}Sair${STD}"
@@ -1010,7 +1010,7 @@ menu_principal(){
 			2 ) rm_apps_rt41 ;;
 			3 ) menu_ativar_desativar ;;
 			4 ) menu_launcher ;;
-			5 ) menu_googletv ;;
+			5 ) menu_SelectCustomLauncher ;;
 			6 ) menu_install_apps ;;
 			7 ) gravar_tela ;;
 			0 ) exit ; fakeroot adb disconnect $IP >/dev/null ;;
@@ -1065,22 +1065,42 @@ menu_launcher(){
 	done
 }
 
-menu_googletv(){ 
+menu_SelectCustomLauncher() { 
+	clear
+	option=0
+	until [ "$option" = "2" ]; do
+		separacao
+		echo -e " ${ROX027}Escolha o Launcher${STD}"
+		separacao
+		echo ""
+		echo -e " ${BLU}1.${STD} ${BLU039}GoogleTV${STD}"
+		echo -e " ${BLU}2.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
+		echo ""
+		read -p " Digite um número:" option
+		case $option in
+			1 ) menu_InstallCustomLauncher "GoogleTV";;
+			2 ) menu_principal ;;
+			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG}${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
+		esac
+	done
+}
+
+menu_InstallCustomLauncher() { 
 	clear
 	option=0
 	until [ "$option" = "3" ]; do
 		separacao
-		echo -e " ${ROX027}Instalar a Launcher GoogleTV Home${STD}"
+		echo -e " ${ROX027}${1} Launcher${STD}"
 		separacao
 		echo ""
-		echo -e " ${BLU}1.${STD} ${GRE046}Instalar/atualizar a GoogleTV Home${STD}"
-		echo -e " ${BLU}2.${STD} ${GRY247}Desativar GoogleTV Home${STD}"
+		echo -e " ${BLU}1.${STD} ${GRE046}Instalar/atualizar a ${1}${STD}"
+		echo -e " ${BLU}2.${STD} ${GRY247}Desativar a ${1}${STD}"
 		echo -e " ${BLU}3.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
 		echo ""
 		read -p " Digite um número:" option
 		case $option in
-			1 ) install_CustomLauncher "GoogleTV";;
-			2 ) disable_CustomLauncher "GoogleTV";;
+			1 ) install_CustomLauncher "${1}";;
+			2 ) disable_CustomLauncher "${1}";;
 			3 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG},${STD} ${ROS}2${STD}${NEG},${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
 		esac
