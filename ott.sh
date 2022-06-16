@@ -374,6 +374,8 @@ install_CustomLauncher() {
                 LAUNCHER_PACKAGE='com.google.android.apps.tv.launcherx'
 			elif [ "${1}" = "FLauncher" ]; then
 				LAUNCHER_PACKAGE='me.efesser.flauncher'
+			elif [ "${1}" = "WolfLauncher" ]; then
+				LAUNCHER_PACKAGE='com.wolf.firelauncher'
 			fi
 
             fakeroot adb shell pm enable "${LAUNCHER_PACKAGE}"
@@ -579,7 +581,9 @@ disable_CustomLauncher(){
         LAUNCHER_PACKAGE='com.google.android.apps.tv.launcherx'
 	elif [ "${1}" = "FLauncher" ]; then
 		LAUNCHER_PACKAGE='me.efesser.flauncher'
-    fi
+	elif [ "${1}" = "WolfLauncher" ]; then
+		LAUNCHER_PACKAGE='com.wolf.firelauncher'
+	fi
 
 	if [ "$(fakeroot adb shell pm list packages -e | cut -f2 -d: | grep ${LAUNCHER_PACKAGE})" != "" ]; then
 		echo ""
@@ -976,7 +980,7 @@ menu_principal(){
 		echo -e " ${BLU}6.${STD} ${AMA226}Gravar Tela da TV${STD} ${NEG}*EXPERIMENTAL*${STD}"
 		echo -e " ${BLU}0.${STD} ${RED}Sair${STD}"
 		echo ""
-		read -p " Digite um número e tecle [Enter]:" option
+		read -p " Digite um número e tecle [Enter]: " option
 		case "$option" in
 			1 ) rm_apps_rt51 ;;
 			2 ) rm_apps_rt41 ;;
@@ -1039,7 +1043,7 @@ menu_launcher(){
 menu_SelectCustomLauncher() { 
 	clear
 	option=0
-	until [ "$option" = "3" ]; do
+	until [ "$option" = "4" ]; do
 		separacao
 		echo -e " ${ROX027}Escolha o Launcher${STD}"
 		separacao
@@ -1047,13 +1051,15 @@ menu_SelectCustomLauncher() {
 		echo -e " ${BLU}1.${STD} ${BLU039}Launcher ATV Pro TCL Mod + Widget${STD}"
 		echo -e " ${BLU}2.${STD} ${BLU039}GoogleTV${STD}"
 		echo -e " ${BLU}3.${STD} ${BLU039}FLauncher${STD}"
+		echo -e " ${BLU}4.${STD} ${BLU039}WolfLauncher${STD}"
 		echo -e " ${BLU}0.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
 		echo ""
-		read -p " Digite um número:" option
+		read -p " Digite um número: " option
 		case $option in
 			1 ) menu_launcher;;
 			2 ) menu_InstallCustomLauncher "GoogleTV";;
 			3 ) menu_InstallCustomLauncher "FLauncher";;
+			4 ) menu_InstallCustomLauncher "WolfLauncher";;
 			0 ) menu_principal ;;
 			* ) clear; echo -e " ${NEG}Por favor escolha${STD} ${ROS}1${STD}${NEG}${STD} ${NEG}ou${STD} ${ROS}3${STD}${NEG}";
 		esac
@@ -1072,7 +1078,7 @@ menu_InstallCustomLauncher() {
 		echo -e " ${BLU}2.${STD} ${GRY247}Desativar${STD}"
 		echo -e " ${BLU}3.${STD} ${ROX063}Retornar ao Menu Principal${STD}"
 		echo ""
-		read -p " Digite um número:" option
+		read -p " Digite um número: " option
 		case $option in
 			1 ) install_CustomLauncher "${1}";;
 			2 ) disable_CustomLauncher "${1}";;
