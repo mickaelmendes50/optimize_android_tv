@@ -356,7 +356,7 @@ install_CustomLauncher() {
     wget "https://github.com/mickaelmendes50/optimize_android_tv/raw/master/prebuilt/${1}.apk" -O "${1}.apk"
 
     if [ "$?" -ne 0 ]; then
-        pause " Erro ao baixar os arquivos, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
+        pause " Erro ao baixar os arquivos, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
     else
         # Instala o Launcher usando ADB
         echo ""
@@ -391,16 +391,16 @@ install_CustomLauncher() {
                     echo ""
                     echo -e " ${GRE}*${STD} ${NEG}Launcher padrão desativado com sucesso!${STD}" && sleep 2
                 else
-                    pause " Falha ao desativar o launcher padrão, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
+                    pause " Falha ao desativar o launcher padrão, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
                 fi
             else
-                pause " Falha ao ativar o ${1}, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
+                pause " Falha ao ativar o ${1}, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
             fi
         else
-	    pause " Erro ao instalar o ${1}, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_googletv
+	    pause " Erro ao instalar o ${1}, verifique a sua conexão. [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
         fi
     fi
-    pause " Tecle [Enter] para retornar ao menu." ; menu_googletv
+    pause " Tecle [Enter] para retornar ao menu." ; menu_InstallCustomLauncher "${1}"
 }
 
 # Instalar e ativar Launcher ATV Pro TCL Mod + Widget
@@ -600,7 +600,7 @@ disable_CustomLauncher(){
 				echo -e " ${CIN}*${STD} ${NEG}${1} desativado com sucesso!${STD}" && sleep 1
 				echo ""
 			else
-				pause " Erro ao desativar o ${1}, verifique sua conexão. Tecle [Enter] para continuar." ; menu_googletv
+				pause " Erro ao desativar o ${1}, verifique sua conexão. Tecle [Enter] para continuar." ; menu_InstallCustomLauncher "${1}"
 			fi
 			fakeroot adb shell am start -n com.google.android.tvlauncher/.MainActivity
 			if [ "$?" -eq "0" ]; then
@@ -611,20 +611,20 @@ disable_CustomLauncher(){
 				echo ""
 				echo -e " ${RED}*${STD} ${NEG}Erro abrir o Launcher padrão, verifique sua conexão.${STD}"
 				echo ""
-				pause " Tecle [Enter] para retornar ao menu" ; menu_googletv
+				pause " Tecle [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
 			fi
 		else
 			echo ""
 			echo -e " ${RED}*${STD} ${NEG}Erro ao desativar ${1}.${STD}"
 			echo ""
-			pause " Tecle [Enter] para retornar ao menu" ; menu_googletv
+			pause " Tecle [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
 		fi
 	else
 		echo ""
 		echo -e " ${ROS}*${STD} ${NEG}${1} ainda não instalado.${STD}"
 		echo ""
 	fi
-	pause " Tecle [Enter] para retornar ao menu" ; menu_googletv
+	pause " Tecle [Enter] para retornar ao menu" ; menu_InstallCustomLauncher "${1}"
 }
 
 # --- INSTALAR NOVOS APPS - INÍCIO
