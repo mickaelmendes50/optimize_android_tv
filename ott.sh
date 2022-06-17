@@ -726,7 +726,12 @@ menu_SelectCustomLauncher() {
 		read -p " Digite um número: " option
 		case $option in
 			1 ) menu_launcher;;
-			2 ) menu_InstallCustomLauncher "GoogleTV" "com.google.android.apps.tv.launcherx";;
+			2 ) ANDROID_VERSION=`fakeroot adb shell getprop ro.build.version.release`
+				if [ "${ANDROID_VERSION}" -eq "9" ]; then
+					menu_InstallCustomLauncher "GoogleTV-A9" "com.google.android.apps.tv.launcherx"
+				else
+					menu_InstallCustomLauncher "GoogleTV" "com.google.android.apps.tv.launcherx"
+				fi;;
 			3 ) menu_InstallCustomLauncher "FLauncher" "me.efesser.flauncher";;
 			4 ) menu_InstallCustomLauncher "WolfLauncher" "com.wolf.firelauncher";;
 			0 ) menu_principal ;;
