@@ -12,8 +12,8 @@ VER="v0.4.00"
 # Tabela de cores: https://misc.flogisoft.com/_media/bash/colors_format/256_colors_fg.png
 
 # Cores degrade
-RED001='\e[38;5;1m'			# Vermelho 1
-RED009='\e[38;5;9m'			# Vermelho 9
+RED001='\e[38;5;1m'		# Vermelho 1
+RED009='\e[38;5;9m'		# Vermelho 9
 CYA122='\e[38;5;122m'		# Ciano 122
 CYA044='\e[38;5;44m'		# Ciano 44
 ROX063='\e[38;5;63m'		# Roxo 63
@@ -41,8 +41,8 @@ STD='\e[m'			# Fechamento de cor
 
 # --- Início Funções ---
 
-# Separação com cor
-separacao() {
+# Separator (with color)
+separator() {
 	for i in {16..21} {21..16} ; do
 		echo -en "\e[38;5;${i}m____\e[0m"
 	done ; echo
@@ -55,8 +55,10 @@ pause() {
 
 # Install the required dependencies for running the script
 installDependencies() {
-	echo -e " ${BLU}*${STD} ${NEG}Baixando dependências para utilizar o script no Termux...${SDT}" && sleep 2
-	echo ""
+	clear
+	separator
+	echo -e " ${BLU}*${STD} ${NEG}Baixando dependências para utilizar o script...${SDT}" && sleep 2
+	separator
 	pkg update -y -o Dpkg::Options::=--force-confold &&
 	pkg install -y ncurses &&
 	pkg install -y android-tools &&
@@ -84,7 +86,7 @@ main() {
 	echo -e " ${NEG}Modelos compatíveis: RT51, RT41 e R51M.${STD}"
 
 	pause " Tecle [Enter] para se conectar a TV..." ; conectar_tv
-	separacao
+	separator
 	echo ""
 }
 
@@ -587,7 +589,7 @@ install_App() {
 gravar_tela(){
 	clear
 	echo -e "${NEG}Gravação de tela da TV - *EXPERIMENTAL*${STD}"
-	separacao
+	separator
 	echo ""
 	echo -e " ${LAR214}Bem vindo a gravação de Tela da TV, esse${STD}"
 	echo -e " ${LAR214}recurso é limitado a 3 minutos de gravação,${STD}"
@@ -682,9 +684,9 @@ menu_EnableDisableApps() {
 	clear
 	option=0
 	until [ "$option" = "3" ]; do
-		separacao
+		separator
 		echo -e " ${ROX027}Ativar e Desativar Apps${STD}"
-		separacao
+		separator
 		echo ""
 		echo -e " ${BLU}1.${STD} ${GRY247}Desativar apps${STD}"
 		echo -e " ${BLU}2.${STD} ${GRE046}Ativar apps${STD}"
@@ -705,9 +707,9 @@ menu_launcher(){
 	clear
 	option=0
 	until [ "$option" = "3" ]; do
-		separacao
+		separator
 		echo -e " ${ROX027}Launcher ATV PRO MOD${STD}"
-		separacao
+		separator
 		echo ""
 		echo -e " ${BLU}1.${STD} ${GRE046}Instalar e ativar Launcher${STD}"
 		echo -e " ${BLU}2.${STD} ${GRY247}Desativar Launcher${STD}"
@@ -727,9 +729,9 @@ menu_SelectCustomLauncher() {
 	clear
 	option=0
 	until [ "$option" = "4" ]; do
-		separacao
+		separator
 		echo -e " ${ROX027}Escolha o Launcher${STD}"
-		separacao
+		separator
 		echo ""
 		echo -e " ${BLU}1.${STD} ${BLU039}Launcher ATV Pro TCL Mod + Widget${STD}"
 		echo -e " ${BLU}2.${STD} ${BLU039}GoogleTV${STD}"
@@ -758,9 +760,9 @@ menu_InstallCustomLauncher() {
 	clear
 	option=0
 	until [ "$option" = "3" ]; do
-		separacao
+		separator
 		echo -e " ${ROX027}${1}${STD}"
-		separacao
+		separator
 		echo ""
 		echo -e " ${BLU}1.${STD} ${GRE046}Instalar/atualizar${STD}"
 		echo -e " ${BLU}2.${STD} ${GRY247}Desinstalar${STD}"
@@ -781,9 +783,9 @@ menu_InstallApps() {
 	clear
 	option=0
 	until [ "$option" = "10" ]; do
-		separacao
+		separator
 		echo -e " ${ROX027}Instalar Novos Apps${STD}"
-		separacao
+		separator
 		echo ""
 		echo -e " ${BLU}1.${STD} Aptoide TV - v5.1.2"
 		echo -e " ${BLU}2.${STD} Deezer MOD - v3.0"
