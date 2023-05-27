@@ -12,8 +12,8 @@ VER="v0.4.00"
 # Tabela de cores: https://misc.flogisoft.com/_media/bash/colors_format/256_colors_fg.png
 
 # Cores degrade
-RED001='\e[38;5;1m'		# Vermelho 1
-RED009='\e[38;5;9m'		# Vermelho 9
+RED001='\e[38;5;1m'			# Vermelho 1
+RED009='\e[38;5;9m'			# Vermelho 9
 CYA122='\e[38;5;122m'		# Ciano 122
 CYA044='\e[38;5;44m'		# Ciano 44
 ROX063='\e[38;5;63m'		# Roxo 63
@@ -42,36 +42,50 @@ STD='\e[m'			# Fechamento de cor
 # --- Início Funções ---
 
 # Separação com cor
-separacao(){
+separacao() {
 	for i in {16..21} {21..16} ; do
 		echo -en "\e[38;5;${i}m____\e[0m"
 	done ; echo
 }
 
 # Função pause
-pause(){
+pause() {
    read -p "$*"
 }
 
-# Verifica se está usando Termux
-termux(){
-	clear
-	echo -e " ${NEG}Bem vindo(a) ao script OTT (Otimização TV TCL)${STD}"
-	echo -e " ${NEG}Modelos compatíveis: RT51, RT41 e R51M.${STD}"
-	separacao
-	echo ""
+# Install the required dependencies for running the script
+installDependencies() {
 	echo -e " ${BLU}*${STD} ${NEG}Baixando dependências para utilizar o script no Termux...${SDT}" && sleep 2
-	pkg update -y -o Dpkg::Options::=--force-confold
-	pkg install -y ncurses && pkg install -y android-tools && pkg install -y wget && pkg install -y fakeroot && clear
+	echo ""
+	pkg update -y -o Dpkg::Options::=--force-confold &&
+	pkg install -y ncurses &&
+	pkg install -y android-tools &&
+	pkg install -y wget &&
+	pkg install -y fakeroot &&
+	clear
+
 	if [ "$?" -eq "0" ]; then
 		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}Instalação conluida com sucesso!${STD}"
+		echo -e " ${GRE}*${STD} ${NEG}Instalação conluida com sucesso!${STD}" && sleep 2
 		echo ""
-		pause " Tecle [Enter] para se conectar a TV..." ; conectar_tv
 	else
 		echo ""
 		echo -e " ${RED}*${STD} ${NEG}Erro ao baixar e instalar as dependências.\n Verifique sua conexão e tente novamente.${STD}" ; exit 0
 	fi
+	clear
+}
+
+#
+# Main function
+#
+main() {
+	installDependencies
+	echo -e " ${NEG}Bem vindo(a) ao script OTT (Otimização TV TCL)${STD}"
+	echo -e " ${NEG}Modelos compatíveis: RT51, RT41 e R51M.${STD}"
+
+	pause " Tecle [Enter] para se conectar a TV..." ; conectar_tv
+	separacao
+	echo ""
 }
 
 # Conexão da TV
@@ -799,9 +813,12 @@ menu_InstallApps() {
 	done
 }
 
-# Cria um diretório temporário e joga todos arquivos lá dentro e remove sempre ao entrar no script
+# Create a temp folder to manage the packages
 rm -rf .tmp
 mkdir .tmp
 cd .tmp
-# Chama o script inicial
-termux
+
+#
+## Start the execution script
+#
+main
