@@ -11,7 +11,7 @@ _Script 100% compatível com o [Termux](https://f-droid.org/en/packages/com.term
 
 **Executar e rodar o script**
 ```
-curl -s https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/oat.sh -o ott.sh; bash oat.sh
+curl -s https://raw.githubusercontent.com/mickaelmendes50/optimize_android_tv/master/oat.sh -o oat.sh; bash oat.sh
 ```
 Após o comando acima, para chamar o script novamente basta digitar:
 ```
