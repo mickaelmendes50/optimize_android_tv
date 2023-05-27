@@ -6,7 +6,7 @@
 # https://adbshell.com/commands/adb-shell-pm-list-packages
 
 # Versão do script
-VER="v0.4.00"
+VER="v5.0"
 
 # Definição de Cores
 # Tabela de cores: https://misc.flogisoft.com/_media/bash/colors_format/256_colors_fg.png
