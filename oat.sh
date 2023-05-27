@@ -57,6 +57,7 @@ pause() {
 installDependencies() {
 	clear
 	separator
+	echo ""
 	echo -e " ${BLU}*${STD} ${NEG}Baixando dependências para utilizar o script...${SDT}" && sleep 2
 	separator
 	pkg update -y -o Dpkg::Options::=--force-confold &&
@@ -68,7 +69,7 @@ installDependencies() {
 
 	if [ "$?" -eq "0" ]; then
 		echo ""
-		echo -e " ${GRE}*${STD} ${NEG}Instalação conluida com sucesso!${STD}" && sleep 2
+		echo -e " ${GRE}*${STD} ${NEG}Instalação conluída com sucesso!${STD}" && sleep 2
 		echo ""
 	else
 		echo ""
@@ -87,6 +88,7 @@ main() {
 	echo ""
 	echo -e " ${NEG}Compatível com dispositivos Android TV e GoogleTV.${STD}"
 	separator
+	echo ""
 	pause " Tecle [Enter] para se conectar a TV..." ; conectar_tv
 	separator
 	echo ""
