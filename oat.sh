@@ -60,6 +60,7 @@ installDependencies() {
 	echo ""
 	echo -e " ${BLU}*${STD} ${NEG}Baixando dependências para utilizar o script...${SDT}" && sleep 2
 	separator
+	echo ""
 	pkg update -y -o Dpkg::Options::=--force-confold &&
 	pkg install -y ncurses &&
 	pkg install -y android-tools &&
@@ -78,6 +79,17 @@ installDependencies() {
 	clear
 }
 
+# Check if the IP is valid
+isValidIp() {
+	ping -c 1 $1 >/dev/null
+	if [ "$?" -eq "0" ]; then
+		return 0
+	else
+		echo -e " ${RED}*${STD} ${NEG}Erro! Falha na conexão, Verifique seu endereço de IP${STD}"
+		pause " Tecle [Enter] para tentar novamente..." ; conectar_tv
+	fi
+}
+
 #
 # Main function
 #
@@ -86,7 +98,7 @@ main() {
 	echo ""
 	echo -e " ${NEG}Bem vindo(a) ao script de Otimização Android TV${STD}"
 	echo ""
-	echo -e " ${NEG}Compatível com dispositivos Android TV e GoogleTV.${STD}"
+	echo -e " Compatível com dispositivos Android TV e GoogleTV."
 	separator
 	echo ""
 	pause " Tecle [Enter] para se conectar a TV..." ; conectar_tv
@@ -95,7 +107,7 @@ main() {
 }
 
 # Conexão da TV
-conectar_tv(){
+conectar_tv() {
 	clear
 	export ANDROID_NO_USE_FWMARK_CLIENT=1
 	echo " Digite o endereço IP da sua TV que encontra no"
@@ -106,45 +118,40 @@ conectar_tv(){
 	echo ""
 	read IP
 
-	ping -c 1 $IP >/dev/null
-	# Testa se a TV está ligada com o modo depuração ativo
+	# Testa se a TV está ligada
+	isValidIp $IP
+	echo ""
+	echo -e " ${LAR214}Conectando-se a sua TV...${STD}" && sleep 3
+	fakeroot adb connect $IP >/dev/null
 	if [ "$?" -eq "0" ]; then
+		echo -e " ${GRE046}Conectado com sucesso à TV!${STD}" && sleep 3
 		echo ""
-		echo -e " ${LAR214}Conectando-se a sua TV...${STD}" && sleep 3
-		fakeroot adb connect $IP >/dev/null
-		if [ "$?" -eq "0" ]; then
-			echo -e " ${GRE046}Conectado com sucesso a TV!${STD}" && sleep 3
+		clear
+		until fakeroot adb shell pm list packages -e 2>/dev/null; do
+		#clear
+			echo -e " ${CYA122}Apareceu a seguinte janela em sua TV:${STD}"
+			echo -e " ${NEG}Permitir a depuração USB?${STD}"
 			echo ""
-			clear
-			until fakeroot adb shell pm list packages -e 2>/dev/null; do
-			#clear
-				echo -e " ${CYA122}Apareceu a seguinte janela em sua TV:${STD}"
-				echo -e " ${NEG}Permitir a depuração USB?${STD}"
-				echo ""
-				echo -e " ${CYA122}Marque a seguinte caixa:${STD}"
-				echo -e " ${ROS}Sempre permitir a partir deste computador${STD}"
-				echo -e " ${CYA122}Depois de marcar a caixa e der${STD} ${NEG}OK${STD}"
-				echo ""
-				pause " Tecle [Enter] para continuar..." ;
-				# Testa se o humano marcou a opção na TV			
-				fakeroot adb disconnect $IP 2>/dev/null && fakeroot adb connect $IP 2>/dev/null
-				if [ "$(fakeroot adb connect $IP | cut -f1,2 -d" ")" = "already connected" ]; then
-					menu_principal
-				else
-					echo ""
-					echo -e " ${CYA}Não me engana, você ainda\n não marcou a opção na TV :-(\n Vou te dar outra chance!${STD}"
-					echo ""
-					pause " Ative a opção e tecle [Enter]"
-				fi
-			done
+			echo -e " ${CYA122}Marque a seguinte caixa:${STD}"
+			echo -e " ${ROS}Sempre permitir a partir deste computador${STD}"
+			echo -e " ${CYA122}Depois de marcar a caixa e der${STD} ${NEG}OK${STD}"
+			echo ""
+			pause " Tecle [Enter] para continuar..." ;
+			# Testa se o humano marcou a opção na TV			
+			fakeroot adb disconnect $IP 2>/dev/null && fakeroot adb connect $IP 2>/dev/null
+			if [ "$(fakeroot adb connect $IP | cut -f1,2 -d" ")" = "already connected" ]; then
 				menu_principal
-		else
-			echo -e " ${RED}*${STD} ${NEG}Erro! Falha na conexão, Verifique seu endereço de IP${STD}"
-			pause " Tecle [Enter] para tentar novamente..." ; conectar_tv
-		fi
+			else
+				echo ""
+				echo -e " ${CYA}Não me engana, você ainda\n não marcou a opção na TV :-(\n Vou te dar outra chance!${STD}"
+				echo ""
+				pause " Ative a opção e tecle [Enter]"
+			fi
+		done
+			menu_principal
 	else
-			echo -e " ${RED}*${STD} ${NEG}Erro! Falha na conexão, Verifique seu endereço de IP${STD}"
-			pause " Tecle [Enter] para tentar novamente..." ; conectar_tv
+		echo -e " ${RED}*${STD} ${NEG}Erro! Falha na conexão, Verifique seu endereço de IP${STD}"
+		pause " Tecle [Enter] para tentar novamente..." ; conectar_tv
 	fi
 }
 
