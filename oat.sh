@@ -139,7 +139,11 @@ main() {
 	echo -e " Compatível com dispositivos Android TV e GoogleTV."
 	separator
 	echo ""
-	pause " Tecle [Enter] para se conectar a TV..." ; conectar_tv
+
+	# Verifica se já tem um dispositivo conectado
+	if [[ "$(fakeroot adb devices | cut -f1,2,4 -d " ")" != *"device"* ]]; then
+		pause " Tecle [Enter] para se conectar a TV..." ; conectar_tv
+	fi
 
 	menu_principal
 }
@@ -657,7 +661,7 @@ menu_principal(){
 	option=0
 	until [ "$option" = "6" ]; do
 		echo ""
-		echo -e " ${CYA}OTMIZAÇÃO TV TCL PLATAFORMAS: RT41, RT51 e R51M ${STD}"
+		echo -e " ${CYA}Otimização Android TV e Google TV${STD}"
 		echo -e " ${YEL}$VER${STD}"
 
 		# Verifica o Status da TV, se está conectada ou não via ADB
