@@ -82,9 +82,11 @@ installDependencies() {
 #
 main() {
 	installDependencies
-	echo -e " ${NEG}Bem vindo(a) ao script OTT (Otimização TV TCL)${STD}"
-	echo -e " ${NEG}Modelos compatíveis: RT51, RT41 e R51M.${STD}"
-
+	echo ""
+	echo -e " ${NEG}Bem vindo(a) ao script de Otimização Android TV${STD}"
+	echo ""
+	echo -e " ${NEG}Compatível com dispositivos Android TV e GoogleTV.${STD}"
+	separator
 	pause " Tecle [Enter] para se conectar a TV..." ; conectar_tv
 	separator
 	echo ""
