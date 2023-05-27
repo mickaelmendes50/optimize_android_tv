@@ -90,6 +90,28 @@ isValidIp() {
 	fi
 }
 
+adbAuthorize() {
+	until [[ "$(fakeroot adb devices)" !=  *"unauthorized"* ]]; do
+		clear
+		echo -e " ${CYA122}Apareceu a seguinte janela em sua TV:${STD}"
+		echo -e " ${NEG}Permitir a depuração USB?${STD}"
+		echo ""
+		echo -e " ${CYA122}Marque a seguinte caixa:${STD}"
+		echo -e " ${ROS}Sempre permitir a partir deste computador${STD}"
+		echo -e " ${CYA122}Depois de marcar a caixa e der${STD} ${NEG}OK${STD}"
+		echo ""
+		pause " Tecle [Enter] para continuar..." ;
+
+		fakeroot adb disconnect $1 2>/dev/null && fakeroot adb connect $1 2>/dev/null
+		if [[ "$(fakeroot adb devices)" ==  *"unauthorized"* ]]; then
+			echo ""
+			echo -e " ${CYA}Não me engana, você ainda\n não marcou a opção na TV :-(\n Vou te dar outra chance!${STD}"
+			echo ""
+			pause " Ative a opção e tecle [Enter]"
+		fi
+	done
+}
+
 adbConnect() {
 	echo -e " ${LAR214}Conectando-se à sua TV...${STD}" && sleep 3
 	fakeroot adb connect $1 >/dev/null
@@ -116,8 +138,8 @@ main() {
 	separator
 	echo ""
 	pause " Tecle [Enter] para se conectar a TV..." ; conectar_tv
-	separator
-	echo ""
+
+	menu_principal
 }
 
 # Conexão da TV
@@ -140,28 +162,9 @@ conectar_tv() {
 	adbConnect $IP
 	echo ""
 
-	until fakeroot adb shell pm list packages -e 2>/dev/null; do
-	#clear
-		echo -e " ${CYA122}Apareceu a seguinte janela em sua TV:${STD}"
-		echo -e " ${NEG}Permitir a depuração USB?${STD}"
-		echo ""
-		echo -e " ${CYA122}Marque a seguinte caixa:${STD}"
-		echo -e " ${ROS}Sempre permitir a partir deste computador${STD}"
-		echo -e " ${CYA122}Depois de marcar a caixa e der${STD} ${NEG}OK${STD}"
-		echo ""
-		pause " Tecle [Enter] para continuar..." ;
-		# Testa se o humano marcou a opção na TV			
-		fakeroot adb disconnect $IP 2>/dev/null && fakeroot adb connect $IP 2>/dev/null
-		if [ "$(fakeroot adb connect $IP | cut -f1,2 -d" ")" = "already connected" ]; then
-			menu_principal
-		else
-			echo ""
-			echo -e " ${CYA}Não me engana, você ainda\n não marcou a opção na TV :-(\n Vou te dar outra chance!${STD}"
-			echo ""
-			pause " Ative a opção e tecle [Enter]"
-		fi
-	done
-		menu_principal
+	# Verifica se o acesso ADB foi autorizado
+	adbAuthorize $IP
+	echo ""
 }
 
 # Remover apps RT51
