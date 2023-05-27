@@ -90,6 +90,20 @@ isValidIp() {
 	fi
 }
 
+adbConnect() {
+	echo -e " ${LAR214}Conectando-se à sua TV...${STD}" && sleep 3
+	fakeroot adb connect $1 >/dev/null
+	if [ "$?" -eq "0" ]; then
+		echo -e " ${GRE046}Conectado com sucesso à TV!${STD}" && sleep 3
+		echo ""
+		clear
+		return 0
+	else
+		echo -e " ${RED}*${STD} ${NEG}Erro! Falha na conexão, Verifique a sua conexão com a internet ou o seu endereço de IP${STD}"
+		pause " Tecle [Enter] para tentar novamente..." ; conectar_tv
+	fi
+}
+
 #
 # Main function
 #
@@ -121,38 +135,33 @@ conectar_tv() {
 	# Testa se a TV está ligada
 	isValidIp $IP
 	echo ""
-	echo -e " ${LAR214}Conectando-se a sua TV...${STD}" && sleep 3
-	fakeroot adb connect $IP >/dev/null
-	if [ "$?" -eq "0" ]; then
-		echo -e " ${GRE046}Conectado com sucesso à TV!${STD}" && sleep 3
+
+	# Estabelece a conexão via ADB
+	adbConnect $IP
+	echo ""
+
+	until fakeroot adb shell pm list packages -e 2>/dev/null; do
+	#clear
+		echo -e " ${CYA122}Apareceu a seguinte janela em sua TV:${STD}"
+		echo -e " ${NEG}Permitir a depuração USB?${STD}"
 		echo ""
-		clear
-		until fakeroot adb shell pm list packages -e 2>/dev/null; do
-		#clear
-			echo -e " ${CYA122}Apareceu a seguinte janela em sua TV:${STD}"
-			echo -e " ${NEG}Permitir a depuração USB?${STD}"
-			echo ""
-			echo -e " ${CYA122}Marque a seguinte caixa:${STD}"
-			echo -e " ${ROS}Sempre permitir a partir deste computador${STD}"
-			echo -e " ${CYA122}Depois de marcar a caixa e der${STD} ${NEG}OK${STD}"
-			echo ""
-			pause " Tecle [Enter] para continuar..." ;
-			# Testa se o humano marcou a opção na TV			
-			fakeroot adb disconnect $IP 2>/dev/null && fakeroot adb connect $IP 2>/dev/null
-			if [ "$(fakeroot adb connect $IP | cut -f1,2 -d" ")" = "already connected" ]; then
-				menu_principal
-			else
-				echo ""
-				echo -e " ${CYA}Não me engana, você ainda\n não marcou a opção na TV :-(\n Vou te dar outra chance!${STD}"
-				echo ""
-				pause " Ative a opção e tecle [Enter]"
-			fi
-		done
+		echo -e " ${CYA122}Marque a seguinte caixa:${STD}"
+		echo -e " ${ROS}Sempre permitir a partir deste computador${STD}"
+		echo -e " ${CYA122}Depois de marcar a caixa e der${STD} ${NEG}OK${STD}"
+		echo ""
+		pause " Tecle [Enter] para continuar..." ;
+		# Testa se o humano marcou a opção na TV			
+		fakeroot adb disconnect $IP 2>/dev/null && fakeroot adb connect $IP 2>/dev/null
+		if [ "$(fakeroot adb connect $IP | cut -f1,2 -d" ")" = "already connected" ]; then
 			menu_principal
-	else
-		echo -e " ${RED}*${STD} ${NEG}Erro! Falha na conexão, Verifique seu endereço de IP${STD}"
-		pause " Tecle [Enter] para tentar novamente..." ; conectar_tv
-	fi
+		else
+			echo ""
+			echo -e " ${CYA}Não me engana, você ainda\n não marcou a opção na TV :-(\n Vou te dar outra chance!${STD}"
+			echo ""
+			pause " Ative a opção e tecle [Enter]"
+		fi
+	done
+		menu_principal
 }
 
 # Remover apps RT51
