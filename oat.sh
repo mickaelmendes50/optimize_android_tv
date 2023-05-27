@@ -130,7 +130,9 @@ adbConnect() {
 # Main function
 #
 main() {
-	installDependencies
+	if [[ "$(getprop)" == *"model"* ]]; then
+		installDependencies
+	fi
 	echo ""
 	echo -e " ${NEG}Bem vindo(a) ao script de Otimização Android TV${STD}"
 	echo ""
